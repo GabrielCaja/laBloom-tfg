@@ -1,6 +1,6 @@
 <template>
 
-<h1>PAGINA EN CONTRUCCION</h1>
+<h1>PAGINA EN CONSTRUCCION</h1>
 
 </template>
 
