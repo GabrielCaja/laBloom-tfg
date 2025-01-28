@@ -1,17 +1,11 @@
 <template>
-
-<h1>PAGINA EN CONSTRUCCION</h1>
-
+  <Navbar />
+  <Footer />
 </template>
 
-
-<script lang="ts" setup> 
-
+<script lang="ts" setup>
+import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
 </script>
 
-
-
-<style scoped>
-
-
-</style>
+<style scoped></style>
