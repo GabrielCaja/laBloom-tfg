@@ -16,7 +16,7 @@
       <!-- Contenido -->
       <div class="p-5">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xl font-bold text-gray-800">Rosas Rojas</h3>
+          <h3 class="text-xl font-bold text-gray-800">Rosas Rojas {{ nombre }}</h3>
         </div>
 
         <!-- Sistema de valoración -->
@@ -39,13 +39,15 @@
         </div>
 
         <p class="text-gray-600 mb-4">
-          Hermoso ramo de rosas rojas frescas, perfecto para cualquier ocasión especial.
+          Hermoso ramo de rosas rojas frescas, perfecto para cualquier ocasión especial.{{
+            descripcion
+          }}
         </p>
 
         <!-- Footer con botones -->
         <div class="flex items-center justify-between pt-3 border-t border-gray-100">
           <span class="px-3 py-1 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-            24.99€
+            24.99€{{ precio }}
           </span>
           <button
             class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-transform duration-200"
@@ -63,6 +65,10 @@
 import { ref } from 'vue'
 
 const rating = ref(4) // Valor inicial de la valoración
+let nombre = ref('')
+let descripcion = ref('')
+let precio = ref(0)
+let imagen = ref('')
 
 const handleAddToCart = () => {
   console.log('Producto añadido al carrito')

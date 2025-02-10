@@ -13,7 +13,15 @@
 
         <div class="hidden md:flex space-x-8">
           <router-link
-            v-for="item in ['Home', 'About', 'Contact']"
+            v-for="item in [
+              'Inicio',
+              'Productos',
+              'Carrito',
+              'Categorias',
+              'Carrito',
+              'Login',
+              'Registro',
+            ]"
             :key="item"
             :to="'/' + item.toLowerCase()"
             class="text-gray-600 hover:text-gray-900 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300 after:bg-gray-900"
