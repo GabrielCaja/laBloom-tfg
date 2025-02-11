@@ -1,32 +1,35 @@
 <template>
-  <nav>
-    <div class="max-w-6xl mx-auto px-4">
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-8">
       <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
         <div class="flex-shrink-0">
-          <router-link
-            to="/"
-            class="text-gray-800 font-bold text-xl hover:-translate-y-0.5 transition-transform"
-          >
-            Logo
+          <router-link to="/" class="flex items-center">
+            <img src="/public/logo.png" alt="Logo" class="h-18 w-auto" />
           </router-link>
         </div>
 
-        <div class="hidden md:flex space-x-8">
-          <router-link
-            v-for="item in [
-              'Inicio',
-              'Productos',
-              'Carrito',
-              'Categorias',
-              'Carrito',
-              'Login',
-              'Registro',
-            ]"
-            :key="item"
-            :to="'/' + item.toLowerCase()"
-            class="text-gray-600 hover:text-gray-900 transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:duration-300 after:bg-gray-900"
-          >
-            {{ item }}
+        <!-- Navigation Links -->
+        <div class="hidden md:flex space-x-6">
+          <router-link to="/blog">Blog</router-link>
+          <router-link to="/productos">Productos</router-link>
+          <router-link to="/preguntas-frecuentes">Pre</router-link>
+
+          <router-link to="/login">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
           </router-link>
         </div>
       </div>
@@ -35,5 +38,3 @@
 </template>
 
 <script lang="ts" setup></script>
-
-<style scoped></style>

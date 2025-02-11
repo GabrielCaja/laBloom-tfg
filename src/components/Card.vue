@@ -5,11 +5,7 @@
     >
       <!-- Imagen con overlay -->
       <div class="relative h-64">
-        <img
-          class="w-full h-full object-cover"
-          src="https://images.unsplash.com/photo-1490750967868-88aa4486c946"
-          alt="Flores hermosas"
-        />
+        <img class="w-full h-full object-cover" src="" alt="Flor" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
       </div>
 
@@ -51,7 +47,7 @@
           </span>
           <button
             class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-transform duration-200"
-            @click="handleAddToCart"
+            @click="addCart"
           >
             Añadir al carrito
           </button>
@@ -63,14 +59,16 @@
 
 <script setup>
 import { ref } from 'vue'
+import { defineProps } from 'vue'
 
-const rating = ref(4) // Valor inicial de la valoración
-let nombre = ref('')
-let descripcion = ref('')
-let precio = ref(0)
-let imagen = ref('')
+const props = defineProps({
+  nombre: String,
+  descripcion: String,
+  precio: Number,
+  imagen: String,
+})
 
-const handleAddToCart = () => {
+const addCart = () => {
   console.log('Producto añadido al carrito')
 }
 </script>
