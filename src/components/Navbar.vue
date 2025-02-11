@@ -3,25 +3,33 @@
     <div class="max-w-6xl mx-auto px-8">
       <div class="flex justify-between items-center h-20">
         <!-- Logo -->
-        <div class="flex-shrink-0">
+        <div class="flex items-center space-x-4 flex-1">
           <router-link to="/" class="flex items-center">
             <img src="/src/logo.png" alt="Logo" class="h-16 w-auto" />
           </router-link>
-        </div>
-
-        <!-- Nombre de la tienda -->
-        <div class="absolute left-1/2 transform -translate-x-1/2">
+          <!-- Nombre de la tienda -->
           <router-link to="/" class="flex items-center">
             <span class="text-xl font-bold">LaBloom</span>
           </router-link>
         </div>
 
+        <!-- Search Bar - Centered -->
+        <div class="flex-1 flex justify-center">
+          <input
+            v-model="searchQuery"
+            @input="searchProductos"
+            type="text"
+            placeholder="Buscar productos..."
+            class="p-2 text-black rounded border w-64"
+          />
+        </div>
+
         <!-- Navigation -->
-        <div class="hidden md:flex space-x-6">
-          <router-link to="/productos">Productos</router-link>
-          <router-link to="/blog">Blog</router-link>
-          <router-link to="/preguntas-frecuentes"
-            ><svg
+        <div class="hidden md:flex items-center space-x-6 flex-1 justify-end">
+          <router-link to="/productos" class="hover:text-gray-600">Productos</router-link>
+          <router-link to="/blog" class="hover:text-gray-600">Blog</router-link>
+          <router-link to="/preguntas-frecuentes" class="hover:text-gray-600">
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -36,8 +44,7 @@
               />
             </svg>
           </router-link>
-
-          <router-link to="/login">
+          <router-link to="/login" class="hover:text-gray-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -59,4 +66,14 @@
   </nav>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const searchQuery = ref('')
+
+const emit = defineEmits(['search-productos'])
+
+const searchProductos = () => {
+  emit('search-productos', searchQuery.value)
+}
+</script>
