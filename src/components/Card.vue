@@ -4,7 +4,7 @@
       class="relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
     >
       <!-- Imagen con overlay -->
-      <div class="relative h-64">
+      <div class="relative h-48">
         <img class="w-full h-full object-cover" src="" alt="Flor" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
       </div>
@@ -12,7 +12,7 @@
       <!-- Contenido -->
       <div class="p-5">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xl font-bold text-gray-800">Rosas Rojas {{ nombre }}</h3>
+          <h3 class="text-xl font-bold text-gray-800">{{ nombre }}</h3>
         </div>
 
         <!-- Sistema de valoración -->
@@ -35,15 +35,13 @@
         </div>
 
         <p class="text-gray-600 mb-4">
-          Hermoso ramo de rosas rojas frescas, perfecto para cualquier ocasión especial.{{
-            descripcion
-          }}
+          {{ descripcion }}
         </p>
 
         <!-- Footer con botones -->
         <div class="flex items-center justify-between pt-3 border-t border-gray-100">
           <span class="px-3 py-1 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-            24.99€{{ precio }}
+            {{ precio }} €
           </span>
           <button
             class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-transform duration-200"

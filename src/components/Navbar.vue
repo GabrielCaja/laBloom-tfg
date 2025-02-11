@@ -2,23 +2,21 @@
   <nav class="bg-white shadow-sm">
     <div class="max-w-6xl mx-auto px-8">
       <div class="flex justify-between items-center h-20">
-        <!-- Aumenta la altura de la navbar -->
         <!-- Logo -->
         <div class="flex-shrink-0">
           <router-link to="/" class="flex items-center">
             <img src="/src/logo.png" alt="Logo" class="h-16 w-auto" />
-            <!-- Ajusta la altura de la imagen -->
           </router-link>
         </div>
 
         <!-- Nombre de la tienda -->
         <div class="absolute left-1/2 transform -translate-x-1/2">
           <router-link to="/" class="flex items-center">
-            <span class="text-xl font-bold">LaBloon</span>
+            <span class="text-xl font-bold">LaBloom</span>
           </router-link>
         </div>
 
-        <!-- Navigation Links -->
+        <!-- Navigation -->
         <div class="hidden md:flex space-x-6">
           <router-link to="/productos">Productos</router-link>
           <router-link to="/blog">Blog</router-link>
