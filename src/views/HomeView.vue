@@ -10,7 +10,7 @@
       :nombre="producto.nombre"
       :descripcion="producto.descripcion"
       :precio="producto.precio"
-      :imagen="producto.imagen"
+      :imagen="producto.rutaImg"
     />
   </div>
   <div v-else class="p-12 text-center">Sin resultados</div>

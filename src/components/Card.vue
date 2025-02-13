@@ -5,7 +5,7 @@
     >
       <!-- Imagen con overlay -->
       <div class="relative h-48">
-        <img class="w-full h-full object-cover" src="" alt="Flor" />
+        <img class="w-full h-full object-cover" :src="imagen" :alt="imagen" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
       </div>
 
