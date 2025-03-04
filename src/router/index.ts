@@ -18,6 +18,16 @@ const router = createRouter({
       name: 'register',
       component: () => import('../views/RegisterView.vue'),
     },
+    {
+      path: '/perfil',
+      name: 'perfil',
+      component: () => import('../views/Perfil.vue'),
+    },
+    {
+      path: '/preguntas-frecuentes',
+      name: 'preguntas-frecuentes',
+      component: () => import('../views/PreguntasVIew.vue'),
+    },
   ],
 })
 
