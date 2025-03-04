@@ -60,6 +60,26 @@
               />
             </svg>
           </router-link>
+          <div
+            v-if="logeado"
+            class="cursor-pointer hover:text-red-600 text-red-500"
+            @click="logout"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -67,11 +87,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const logeado = ref(false)
 const searchQuery = ref('')
 
 const emit = defineEmits(['search-productos'])
+
+// Verificar si hay un token al cargar el componente
+onMounted(() => {
+  checkLoginStatus()
+})
+//Funcion para cerrar sesion
+const logout = () => {
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('es_admin')
+  logeado.value = false
+  router.push('/')
+}
+// Función para verificar el estado de login
+const checkLoginStatus = () => {
+  const token = localStorage.getItem('access_token')
+  logeado.value = !!token
+}
 
 const searchProductos = () => {
   emit('search-productos', searchQuery.value)
