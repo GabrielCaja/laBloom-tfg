@@ -1,52 +1,89 @@
-<style scoped></style>
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50">
-    <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
-      <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Inicia Sesion</h2>
+  <div class="flex items-center justify-center min-h-screen bg-gray-50">
+    <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+      <div class="flex justify-center">
+        <img src="/src/logo.png" alt="LOGO TIENDA" class="h-32" />
       </div>
-      <form class="mt-8 space-y-6">
-        <div class="rounded-md shadow-sm -space-y-px">
-          <div>
-            <label for="email" class="sr-only">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Email address"
-            />
-          </div>
-          <div>
-            <label for="password" class="sr-only">Contraseña</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
-            />
-          </div>
+      <form @submit.prevent="login" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            id="email"
+            type="email"
+            v-model="email"
+            required
+            class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
 
         <div>
-          <p class="text-center mb-4">
-            No estas registrado? Registrate
-            <router-link to="/register" class="text-blue-600 hover:text-blue-800">aquí</router-link>
-          </p>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input
+            id="password"
+            type="password"
+            v-model="password"
+            required
+            class="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
 
+        <div>
           <button
             type="submit"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Sign in
+            Login
           </button>
         </div>
+        <div class="text-center mt-4">
+          <p class="text-sm text-gray-600">
+            ¿No tienes cuenta? Regístrate
+            <router-link to="/register" class="text-blue-500 hover:underline">aquí</router-link>
+          </p>
+        </div>
       </form>
+
+      <p v-if="errorMessage" class="text-sm text-center text-red-600">{{ errorMessage }}</p>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script>
+import axios from 'axios'
+
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      errorMessage: '',
+    }
+  },
+  methods: {
+    async login() {
+      try {
+        const response = await axios.post('http://localhost:8000/api/login/', {
+          email: this.email,
+          password: this.password,
+        })
+        console.log(response.data)
+
+        // Guardar el token (sin importar si es admin o no)
+        localStorage.setItem('access_token', response.data.access_token)
+
+        // Opcionalmente, guardar también el rol del usuario
+        localStorage.setItem('es_admin', response.data.es_admin)
+
+        // Emitir evento de éxito
+        this.$emit('loginSuccess', response.data)
+
+        // Redirigir al usuario
+        this.$router.push('/')
+      } catch (error) {
+        console.error('Error en login:', error)
+        this.errorMessage = 'Credenciales inválidas'
+      }
+    },
+  },
+}
+</script>
