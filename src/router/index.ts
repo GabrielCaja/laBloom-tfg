@@ -28,6 +28,21 @@ const router = createRouter({
       name: 'preguntas-frecuentes',
       component: () => import('../views/PreguntasVIew.vue'),
     },
+    {
+      path: '/contacto',
+      name: 'contacto',
+      component: () => import('../views/ContactoView.vue'),
+    },
+    {
+      path: '/sobre-nosotros',
+      name: 'sobre-nosotros',
+      component: () => import('../views/AboutView.vue'),
+    },
+    {
+      path: '/blog',
+      name: 'blog',
+      component: () => import('../views/BlogView.vue'),
+    },
   ],
 })
 

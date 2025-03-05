@@ -1,5 +1,11 @@
 <template>
+  <!-- Navbar -->
   <Navbar @search-productos="searchProductos" />
+  <!-- Carousel -->
+  <section>
+    <Carousel />
+  </section>
+
   <div
     v-if="filteredProducts.length"
     class="grid grid-cols-1 gap-4 p-12 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -19,6 +25,7 @@
 </template>
 
 <script setup>
+import Carousel from '@/components/Carousel.vue'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import Card from '../components/Card.vue'
