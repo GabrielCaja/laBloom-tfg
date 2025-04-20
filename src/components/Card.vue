@@ -58,16 +58,35 @@
 <script setup>
 import { ref } from 'vue'
 import { defineProps } from 'vue'
+import CarritoService from '@/services/CarritoService'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
+const rating = ref(4) // Valor por defecto o podría ser una prop también
 
 const props = defineProps({
+  id: Number,
   nombre: String,
   descripcion: String,
   precio: Number,
   imagen: String,
 })
 
-const addCart = () => {
-  console.log('Producto añadido al carrito')
+const addCart = async () => {
+  try {
+    //Llamamos al método del servicio para agregar el producto
+    //Pasamos el ID del producto y cantidad 1 por defecto
+    const response = await CarritoService.agregarProducto(props.id, 1)
+
+    //Mostramos una notificación de éxito
+    toast.success(`${props.nombre} añadido al carrito`)
+
+    console.log('Producto añadido al carrito', response)
+  } catch (error) {
+    //Mostramos una notificación de error
+    toast.error('No se pudo añadir el producto al carrito')
+    console.error('Error al añadir producto al carrito:', error)
+  }
 }
 </script>
 

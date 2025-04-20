@@ -13,6 +13,7 @@
     <Card
       v-for="producto in filteredProducts"
       :key="producto.id"
+      :id="producto.id"
       :nombre="producto.nombre"
       :descripcion="producto.descripcion"
       :precio="producto.precio"
