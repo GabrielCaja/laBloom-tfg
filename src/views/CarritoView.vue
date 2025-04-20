@@ -174,7 +174,6 @@ const cargarCarrito = async () => {
 }
 
 // Funciones para manipular cantidades
-// Funciones para manipular cantidades
 const incrementarCantidad = async (index) => {
   try {
     const item = items.value[index]

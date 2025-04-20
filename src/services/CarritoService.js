@@ -3,7 +3,7 @@ import axios from 'axios'
 const API_URL = 'http://localhost:8000/api'
 
 const CarritoService = {
-  // Obtener el carrito actual
+  //Obtener el carrito actual
   getCarrito: async () => {
     try {
       const token = localStorage.getItem('access_token')
@@ -19,7 +19,7 @@ const CarritoService = {
     }
   },
 
-  // Agregar producto al carrito
+  //Agregar producto al carrito
   agregarProducto: async (productoId, cantidad) => {
     try {
       const token = localStorage.getItem('access_token')
@@ -39,7 +39,7 @@ const CarritoService = {
     }
   },
 
-  // Actualizar cantidad de producto
+  //Actualizar cantidad de producto
   actualizarProducto: async (productoId, cantidad) => {
     try {
       const token = localStorage.getItem('access_token')
@@ -59,7 +59,7 @@ const CarritoService = {
     }
   },
 
-  // Eliminar producto del carrito
+  //Eliminar producto del carrito
   eliminarProducto: async (productoId) => {
     try {
       const token = localStorage.getItem('access_token')
@@ -75,7 +75,7 @@ const CarritoService = {
     }
   },
 
-  // Vaciar el carrito
+  //Vaciar el carrito
   vaciarCarrito: async () => {
     try {
       const response = await axios.delete(`${API_URL}/carrito/vaciar`, { withCredentials: true })
@@ -86,7 +86,7 @@ const CarritoService = {
     }
   },
 
-  // Procesar el pedido
+  //Procesar el pedido
   procesarPedido: async (userId, direccionEnvio) => {
     try {
       const response = await axios.post(
