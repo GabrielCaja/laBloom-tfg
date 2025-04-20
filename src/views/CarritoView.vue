@@ -174,10 +174,12 @@ const cargarCarrito = async () => {
 }
 
 // Funciones para manipular cantidades
+// Funciones para manipular cantidades
 const incrementarCantidad = async (index) => {
   try {
     const item = items.value[index]
-    await CarritoService.actualizarProducto(item.id, item.cantidad + 1)
+    // Usar producto_id en lugar de id
+    await CarritoService.actualizarProducto(item.producto_id, item.cantidad + 1)
     //Recargar el carrito para obtener datos actualizados
     await cargarCarrito()
     toast.success('Cantidad actualizada')
@@ -191,7 +193,8 @@ const decrementarCantidad = async (index) => {
   try {
     const item = items.value[index]
     if (item.cantidad > 1) {
-      await CarritoService.actualizarProducto(item.id, item.cantidad - 1)
+      // Usar producto_id en lugar de id
+      await CarritoService.actualizarProducto(item.producto_id, item.cantidad - 1)
       await cargarCarrito()
       toast.success('Cantidad actualizada')
     }

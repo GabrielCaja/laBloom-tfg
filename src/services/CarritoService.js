@@ -42,10 +42,15 @@ const CarritoService = {
   // Actualizar cantidad de producto
   actualizarProducto: async (productoId, cantidad) => {
     try {
+      const token = localStorage.getItem('access_token')
       const response = await axios.put(
         `${API_URL}/carrito/actualizar`,
         { producto_id: productoId, cantidad },
-        { withCredentials: true },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       )
       return response.data
     } catch (error) {
