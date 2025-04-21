@@ -5,23 +5,7 @@
     <div class="container mx-auto px-4 py-3">
       <div class="flex items-center text-sm text-gray-500">
         <router-link to="/" class="hover:text-indigo-600 transition-colors">
-          <span class="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-            Inicio
-          </span>
+          <span class="flex items-center"> Inicio </span>
         </router-link>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +250,7 @@ import BarraNavegacion from '@/components/Navbar.vue'
 import PieDePagina from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
 
-// Categorías para filtrar las preguntas
+//Categorías para filtrar las preguntas
 const categorias = [
   { id: 'pedidos', nombre: 'Pedidos' },
   { id: 'pagos', nombre: 'Pagos' },
@@ -335,14 +319,14 @@ const preguntas = ref([
   },
 ])
 
-// Filtra las preguntas según la categoría activa y la búsqueda
+//Filtra las preguntas según la categoría activa y la búsqueda
 const preguntasFiltradas = computed(() => {
   return preguntas.value.filter((pregunta) => {
-    // Filtrar por categoría
+    //Filtrar por categoría
     const coincideCategoria =
       categoriaActiva.value === 'todas' || pregunta.categoria === categoriaActiva.value
 
-    // Filtrar por búsqueda
+    //Filtrar por búsqueda
     const coincideBusqueda =
       pregunta.pregunta.toLowerCase().includes(textoBusqueda.value.toLowerCase()) ||
       pregunta.respuesta.toLowerCase().includes(textoBusqueda.value.toLowerCase())
@@ -351,9 +335,9 @@ const preguntasFiltradas = computed(() => {
   })
 })
 
-// Función para abrir/cerrar preguntas
+//Función para abrir/cerrar preguntas
 const alternarPregunta = (indice: number) => {
-  // Encontrar el índice correcto en el array original
+  //Encontrar el índice correcto en el array original
   const indiceOriginal = preguntas.value.findIndex(
     (pregunta) => pregunta.pregunta === preguntasFiltradas.value[indice].pregunta,
   )
