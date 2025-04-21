@@ -1,4 +1,25 @@
 <template>
+  <Navbar />
+  <!-- Breadcumbs -->
+  <div class="bg-gray-50 border-b border-gray-200">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex items-center text-sm text-gray-500">
+        <router-link to="/" class="hover:text-indigo-600 transition-colors">
+          <span class="flex items-center"> Inicio </span>
+        </router-link>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-3 w-3 mx-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="font-medium text-gray-900">Login</span>
+      </div>
+    </div>
+  </div>
   <div class="flex items-center justify-center min-h-screen bg-gray-50">
     <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
       <div class="flex justify-center">
@@ -46,12 +67,19 @@
       <p v-if="errorMessage" class="text-sm text-center text-red-600">{{ errorMessage }}</p>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
 import axios from 'axios'
 
 export default {
+  components: {
+    Navbar,
+    Footer,
+  },
   data() {
     return {
       email: '',
@@ -68,16 +96,16 @@ export default {
         })
         console.log(response.data)
 
-        // Guardar el token (sin importar si es admin o no)
+        //Guardar el token (sin importar si es admin o no)
         localStorage.setItem('access_token', response.data.access_token)
 
-        // Opcionalmente, guardar también el rol del usuario
+        //Opcionalmente, guardar también el rol del usuario
         localStorage.setItem('es_admin', response.data.es_admin)
 
-        // Emitir evento de éxito
+        //Emitir evento de éxito
         this.$emit('loginSuccess', response.data)
 
-        // Redirigir al usuario
+        //Redirigir al usuario
         this.$router.push('/')
       } catch (error) {
         console.error('Error en login:', error)

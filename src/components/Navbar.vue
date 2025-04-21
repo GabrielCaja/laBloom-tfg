@@ -61,7 +61,7 @@
               />
             </svg>
           </router-link>
-          <router-link v-if="logeado" to="/perfil" class="hover:text-gray-600">
+          <router-link v-if="logeado" to="/perfil" class="hover:text-blue-600 text-blue-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -132,12 +132,7 @@ const emit = defineEmits(['search-productos'])
 
 //Propiedad para determinar si se debe mostrar la barra de búsqueda
 const mostrarBusqueda = computed(() => {
-  return (
-    route.name === 'home' ||
-    route.name === 'productos' ||
-    route.path === '/' ||
-    route.path === '/productos'
-  )
+  return route.name === 'productos' || route.path === '/productos'
 })
 
 //Verificar si hay un token al cargar el componente
