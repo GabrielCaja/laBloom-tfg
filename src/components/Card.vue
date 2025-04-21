@@ -34,17 +34,39 @@
           <span class="ml-2 text-sm text-gray-600">{{ rating }} de 5</span>
         </div>
 
-        <p class="text-gray-600 mb-4">
+        <p class="text-gray-600 mb-4 line-clamp-3">
           {{ descripcion }}
         </p>
 
         <!-- Footer con botones -->
-        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-          <span class="px-3 py-1 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-            {{ precio }} €
-          </span>
+        <div class="pt-3 border-t border-gray-100">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
+              {{ precio }} €
+            </span>
+            <router-link
+              :to="`/producto/${id}`"
+              class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center"
+            >
+              Ver detalles
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 ml-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </router-link>
+          </div>
           <button
-            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-transform duration-200"
+            class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-transform duration-200"
             @click="addCart"
           >
             Añadir al carrito
@@ -58,16 +80,35 @@
 <script setup>
 import { ref } from 'vue'
 import { defineProps } from 'vue'
+import CarritoService from '@/services/CarritoService'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
+const rating = ref(4) // Valor por defecto o podría ser una prop también
 
 const props = defineProps({
+  id: Number,
   nombre: String,
   descripcion: String,
   precio: Number,
   imagen: String,
 })
 
-const addCart = () => {
-  console.log('Producto añadido al carrito')
+const addCart = async () => {
+  try {
+    //Llamamos al método del servicio para agregar el producto
+    //Pasamos el ID del producto y cantidad 1 por defecto
+    const response = await CarritoService.agregarProducto(props.id, 1)
+
+    //Mostramos una notificación de éxito
+    toast.success(`${props.nombre} añadido al carrito`)
+
+    console.log('Producto añadido al carrito', response)
+  } catch (error) {
+    //Mostramos una notificación de error
+    toast.error('No se pudo añadir el producto al carrito')
+    console.error('Error al añadir producto al carrito:', error)
+  }
 }
 </script>
 
@@ -80,5 +121,13 @@ const addCart = () => {
 .card-container:hover img {
   transform: scale(1.05);
   transition: transform 0.6s ease;
+}
+
+/* Asegurar que la descripción tenga altura limitada */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

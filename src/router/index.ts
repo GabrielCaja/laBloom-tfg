@@ -43,6 +43,21 @@ const router = createRouter({
       name: 'blog',
       component: () => import('../views/BlogView.vue'),
     },
+    {
+      path: '/carrito',
+      name: 'carrito',
+      component: () => import('../views/CarritoView.vue'),
+    },
+    {
+      path: '/productos',
+      name: 'productos',
+      component: () => import('../views/ProductosView.vue'),
+    },
+    {
+      path: '/producto/:id',
+      name: 'ProductoInfo',
+      component: () => import('../views/ProductoInfo.vue'),
+    },
   ],
 })
 

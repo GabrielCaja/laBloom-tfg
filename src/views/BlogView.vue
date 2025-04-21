@@ -1,5 +1,15 @@
 <template>
   <Navbar />
+  <!-- Breadcrumbs -->
+  <div class="bg-gray-100 py-2">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center text-sm text-gray-600">
+        <router-link to="/" class="hover:text-indigo-600">Inicio</router-link>
+        <span class="mx-2">/</span>
+        <span class="font-medium text-gray-800">Blog</span>
+      </div>
+    </div>
+  </div>
   <div class="bg-gray-50 min-h-screen">
     <!-- Cabecera del blog -->
     <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
