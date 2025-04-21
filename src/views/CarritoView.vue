@@ -1,4 +1,15 @@
 <template>
+  <Navbar />
+  <!-- Breadcrumbs -->
+  <div class="bg-gray-100 py-2">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center text-sm text-gray-600">
+        <router-link to="/" class="hover:text-indigo-600">Inicio</router-link>
+        <span class="mx-2">/</span>
+        <span class="font-medium text-gray-800">Carrito</span>
+      </div>
+    </div>
+  </div>
   <div class="max-w-4xl mx-auto px-4 py-8">
     <h1 class="text-3xl font-light text-center mb-8 text-gray-800">Carrito de Compras</h1>
 
@@ -20,7 +31,7 @@
         </svg>
         <p class="text-gray-500 mb-6">Tu carrito está vacío</p>
         <router-link
-          to="/"
+          to="/productos"
           class="inline-block px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors transform hover:scale-105 duration-200"
         >
           Seguir comprando
@@ -124,6 +135,7 @@
       </div>
     </transition>
   </div>
+  <Footer />
 </template>
 
 <script setup>
@@ -131,6 +143,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import CarritoService from '@/services/CarritoService'
 import { useToast } from 'vue-toastification'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
 
 const router = useRouter()
 const toast = useToast()
