@@ -173,6 +173,7 @@
           :descripcion="producto.descripcion"
           :precio="producto.precio"
           :imagen="producto.rutaImg"
+          @agregar-al-carrito="handleAgregarAlCarrito"
         />
       </div>
 
@@ -183,7 +184,10 @@
           :key="producto.id"
           class="bg-white rounded-lg shadow-sm p-4 flex flex-col md:flex-row gap-4 transition-all hover:shadow-md hover:transform hover:-translate-y-1"
         >
-          <div class="md:w-48 h-48 flex-shrink-0">
+          <div
+            class="md:w-48 h-48 flex-shrink-0 cursor-pointer"
+            @click="router.push('/producto/' + producto.id)"
+          >
             <img
               :src="producto.rutaImg || 'https://via.placeholder.com/300'"
               :alt="producto.nombre"
@@ -197,12 +201,20 @@
               <span class="text-xl font-bold text-indigo-600"
                 >{{ producto.precio.toFixed(2) }}€</span
               >
-              <router-link
-                :to="'/producto/' + producto.id"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors"
-              >
-                Ver detalles
-              </router-link>
+              <div class="flex gap-2">
+                <router-link
+                  :to="'/producto/' + producto.id"
+                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors"
+                >
+                  Ver detalles
+                </router-link>
+                <button
+                  @click="handleAgregarAlCarrito(producto.id)"
+                  class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+                >
+                  Añadir al carrito
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -226,7 +238,7 @@
         />
       </svg>
       <h3 class="text-xl font-medium text-gray-700 mb-2">No se encontraron productos</h3>
-      <p class="text-gray-500 mb-6">Prueba con otros filtros o busca con términos más generales</p>
+      <p class="text-gray-500 mb-6">Prueba con otros filtros</p>
       <button
         @click="reiniciarFiltros"
         class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors"
@@ -240,6 +252,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import Navbar from '@/components/Navbar.vue'
@@ -248,7 +261,8 @@ import Card from '@/components/Card.vue'
 import CarritoService from '@/services/CarritoService'
 
 const toast = useToast()
-// ...existing code...
+const router = useRouter()
+
 // Estados
 const productos = ref([])
 const categorias = ref([])
@@ -259,9 +273,10 @@ const categoriaSeleccionada = ref('')
 const ordenarPor = ref('nombre_asc')
 const precioMaximo = ref(1000)
 const productosFiltrados = ref([])
-const modoVisualizacion = ref('grid') // Nuevo: 'grid' o 'list'
+const modoVisualizacion = ref('grid')
+const logeado = ref(false) // Añadimos la variable como ref
 
-// Obtener datos de la API de productos
+//Obtener datos de la API de productos
 const cargarProductos = async () => {
   try {
     cargando.value = true
@@ -275,13 +290,11 @@ const cargarProductos = async () => {
       descripcion: producto.descripcion,
       precio: parseFloat(producto.precio),
       rutaImg: producto.rutaImg,
-      categoria_id: producto.categoria_id, // Asegúrate de que tu API devuelve el id de la categoría
-      categoria_nombre: producto.categoria_nombre || 'General', // Nombre de la categoría si lo tienes
+      categoria_id: producto.categoria_id,
+      categoria_nombre: producto.categoria_nombre || 'General',
       fecha: new Date(producto.created_at || Date.now()),
     }))
 
-    // Ya no extraemos las categorías de los productos aquí
-    // En su lugar, llamamos a la función para cargar categorías de la API
     await cargarCategorias()
 
     aplicarFiltros()
@@ -293,7 +306,7 @@ const cargarProductos = async () => {
   }
 }
 
-// Nueva función para cargar categorías desde la API
+//Función para cargar categorías desde la API
 const cargarCategorias = async () => {
   try {
     const respuesta = await axios.get('http://localhost:8000/api/categoria/')
@@ -350,7 +363,6 @@ const aplicarFiltros = () => {
 
   productosFiltrados.value = resultado
 }
-// ...existing code...
 
 //Restablecer todos los filtros
 const reiniciarFiltros = () => {
@@ -361,15 +373,42 @@ const reiniciarFiltros = () => {
   aplicarFiltros()
   toast.info('Filtros restablecidos')
 }
+
 //Función para buscar productos desde navbar
 const buscarProductos = (query) => {
   terminoBusqueda.value = query
   aplicarFiltros()
 }
 
-//Cargar productos al montar el componente
+// Función para verificar el estado de login
+const checkLoginStatus = () => {
+  const token = localStorage.getItem('access_token')
+  logeado.value = !!token
+}
+
+//Función para gestionar la acción de añadir al carrito
+const handleAgregarAlCarrito = (productoId) => {
+  if (!logeado.value) {
+    toast.warning('Necesitas iniciar sesión para añadir productos al carrito')
+    router.push('/login')
+    return
+  }
+
+  //Si el usuario está autenticado, procedemos a añadir al carrito
+  //Añadimos una cantidad por defecto de 1
+  CarritoService.agregarProducto(productoId, 1)
+    .then(() => {
+      toast.success('Producto añadido al carrito correctamente')
+    })
+    .catch((error) => {
+      console.error('Error al añadir al carrito:', error)
+      toast.error('No se pudo añadir el producto al carrito')
+    })
+}
+//Verificar si hay un token al cargar el componente
 onMounted(() => {
   cargarProductos()
+  checkLoginStatus()
 })
 </script>
 

@@ -1,288 +1,541 @@
 <template>
-  <!-- Navbar -->
-  <Navbar @search-productos="searchProductos" />
-
-  <!-- Hero Section con Carousel -->
-  <section class="relative">
+  <Navbar />
+  <div>
+    <!-- Hero Section con Carousel -->
     <Carousel />
-    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-      <div class="text-center px-4">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">LaBloom</h1>
-        <p class="text-xl md:text-2xl text-white mb-6">Flores frescas para cada ocasión</p>
-        <button
-          class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-semibold transition duration-300 shadow-lg"
-        >
-          Explorar colección
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Categorías -->
-  <section class="py-12 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Nuestras Categorías</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div
-          v-for="(categoria, index) in categorias"
-          :key="index"
-          class="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
-        >
-          <div class="h-40 bg-emerald-50 flex items-center justify-center">
-            <span class="text-4xl">{{ categoria.icono }}</span>
-          </div>
-          <div class="p-4 text-center">
-            <h3 class="font-semibold text-gray-800">{{ categoria.nombre }}</h3>
-            <p class="text-sm text-gray-600 mt-1">{{ categoria.cantidadProductos }} productos</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Productos -->
-  <section class="py-12">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold text-gray-800">Nuestros Arreglos Florales</h2>
-
-        <!-- Filtros -->
-        <div class="flex gap-2">
-          <select
-            class="border rounded-md px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+    <!-- Sección de bienvenida -->
+    <section class="container mx-auto px-4 py-16">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl font-light text-gray-800 mb-6">Bienvenido a LaBloom</h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Donde convertimos momentos especiales en recuerdos inolvidables a través de nuestras
+          creaciones florales.
+        </p>
+        <div class="flex justify-center space-x-4">
+          <router-link
+            to="/sobre-nosotros"
+            class="px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-colors"
           >
-            <option>Todos</option>
-            <option>Más vendidos</option>
-            <option>Novedades</option>
-            <option>De temporada</option>
-          </select>
+            Conócenos
+          </router-link>
+          <router-link
+            to="/productos"
+            class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+          >
+            Ver catálogo
+          </router-link>
+          <router-link
+            to="/preguntas-frecuentes"
+            class="px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-colors"
+          >
+            Preguntas Frecuentes
+          </router-link>
         </div>
       </div>
+    </section>
 
-      <!-- Estado de carga -->
-      <div v-if="isLoading" class="flex justify-center py-16">
+    <!-- Categorías destacadas -->
+    <section class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-light text-center text-gray-800 mb-12">Nuestras categorías</h2>
+
+        <!-- Estado de carga -->
+        <div v-if="loadingCategorias" class="flex justify-center py-12">
+          <div
+            class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"
+          ></div>
+        </div>
+
+        <!-- Error -->
+        <div v-else-if="errorCategorias" class="bg-red-50 p-4 rounded-lg text-red-600 text-center">
+          {{ errorCategorias }}
+        </div>
+
+        <!-- Categorías -->
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            v-for="categoria in categorias"
+            :key="categoria.id"
+            class="relative overflow-hidden rounded-lg shadow-lg group cursor-pointer"
+          >
+            <img
+              :src="categoria.rutaImg"
+              :alt="categoria.nombre"
+              class="w-full h-64 object-cover transition duration-300 transform group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-xl font-medium text-white">{{ categoria.nombre }}</h3>
+              <router-link
+                :to="`/productos?categoria=${categoria.id}`"
+                class="inline-block mt-2 text-sm text-white hover:underline"
+              >
+                Ver productos →
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Productos destacados -->
+    <section class="container mx-auto px-4 py-16">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-light text-gray-800">Productos destacados</h2>
+        <router-link
+          to="/productos"
+          class="text-indigo-600 hover:text-indigo-800 flex items-center"
+        >
+          Ver todos
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 ml-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            />
+          </svg>
+        </router-link>
+      </div>
+
+      <div v-if="loading" class="flex justify-center py-12">
         <div
-          class="animate-spin rounded-full h-12 w-12 border-4 border-emerald-300 border-t-emerald-600"
+          class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"
         ></div>
       </div>
 
-      <!-- Mensaje de error -->
-      <div v-else-if="error" class="bg-red-100 text-red-700 p-4 rounded-lg text-center my-8">
+      <div v-else-if="error" class="bg-red-50 p-4 rounded-lg text-red-600">
         {{ error }}
       </div>
 
-      <!-- Productos -->
-      <div
-        v-else-if="filteredProducts.length"
-        class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card
-          v-for="producto in filteredProducts"
+          v-for="producto in productosDestacados"
           :key="producto.id"
           :id="producto.id"
           :nombre="producto.nombre"
           :descripcion="producto.descripcion"
           :precio="producto.precio"
           :imagen="producto.rutaImg"
-          class="transform hover:scale-105 transition duration-300"
+          @agregar-al-carrito="agregarAlCarrito"
         />
       </div>
+    </section>
 
-      <!-- Sin resultados -->
-      <div v-else class="p-12 text-center bg-gray-50 rounded-lg">
-        <span class="text-5xl mb-4 block">🌷</span>
-        <h3 class="text-2xl font-semibold text-gray-700">No se encontraron resultados</h3>
-        <p class="text-gray-600 mt-2">Intenta con otra búsqueda o explora nuestras categorías</p>
-      </div>
-
-      <!-- Paginación -->
-      <div class="flex justify-center mt-8" v-if="filteredProducts.length">
-        <button class="mx-1 px-3 py-1 rounded border hover:bg-emerald-100">1</button>
-        <button class="mx-1 px-3 py-1 rounded border hover:bg-emerald-100">2</button>
-        <button class="mx-1 px-3 py-1 rounded border hover:bg-emerald-100">3</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonios -->
-  <section class="py-12 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">
-        Lo que dicen nuestros clientes
-      </h2>
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <div
-          v-for="(testimonio, index) in testimonios"
-          :key="index"
-          class="bg-white p-6 rounded-lg shadow-md"
-        >
-          <div class="flex items-center mb-4">
-            <div
-              class="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold"
+    <!-- Banner promocional -->
+    <section class="bg-indigo-600 py-16">
+      <div class="container mx-auto px-4">
+        <div class="md:flex items-center justify-between">
+          <div class="md:w-1/2 mb-8 md:mb-0">
+            <h2 class="text-3xl font-light text-white mb-4">Envío gratuito en tu primer pedido</h2>
+            <p class="text-indigo-100 mb-6">
+              Disfruta de envío gratis en tu primer pedido al registrarte en nuestra web.
+            </p>
+            <router-link
+              to="/register"
+              class="inline-block px-6 py-3 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
             >
-              {{ testimonio.iniciales }}
-            </div>
-            <div class="ml-4">
-              <h4 class="font-semibold">{{ testimonio.nombre }}</h4>
+              Registrarme ahora
+            </router-link>
+          </div>
+          <div class="md:w-1/3">
+            <img
+              src="https://images.unsplash.com/photo-1594663653925-365bcbf7ef86?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+              alt="Promoción"
+              class="rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog / Consejos -->
+    <section class="container mx-auto px-4 py-16">
+      <h2 class="text-3xl font-light text-gray-800 mb-12 text-center">Nuestro blog</h2>
+
+      <!-- Estado de carga -->
+      <div v-if="loadingArticulos" class="flex justify-center py-12">
+        <div
+          class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"
+        ></div>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="errorArticulos" class="bg-red-50 p-4 rounded-lg text-red-600 text-center">
+        {{ errorArticulos }}
+      </div>
+
+      <!-- Sin artículos -->
+      <div v-else-if="articulosRecientes.length === 0" class="text-center py-12">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-16 w-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+        <p class="text-gray-500">No hay articulos disponibles en este momento.</p>
+      </div>
+
+      <!-- Lista de artículos -->
+      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+          v-for="articulo in articulosRecientes"
+          :key="articulo.id"
+          class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+        >
+          <img :src="articulo.imagen" :alt="articulo.titulo" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <div class="text-sm text-gray-500 mb-2">{{ articulo.fecha }}</div>
+            <h3 class="text-xl font-medium text-gray-800 mb-2">{{ articulo.titulo }}</h3>
+            <p class="text-gray-600 mb-4">{{ articulo.resumen }}</p>
+            <router-link
+              :to="`/blog/${articulo.id}`"
+              class="text-indigo-600 hover:text-indigo-800 font-medium"
+            >
+              Leer más
+            </router-link>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <router-link
+          to="/blog"
+          class="inline-block px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-colors"
+        >
+          Ver todas las entradas
+        </router-link>
+      </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-light text-gray-800 mb-12 text-center">
+          Lo que dicen nuestros clientes
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Testimonio 1 -->
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
               <div class="flex text-yellow-400">
-                <span v-for="n in 5" :key="n" class="mr-1">★</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
               </div>
             </div>
+            <p class="text-gray-600 mb-4">
+              "El ramo que pedí para el cumpleaños de mi madre era precioso. Llegó puntual y las
+              flores estaban perfectas. ¡Muy recomendable!"
+            </p>
+            <div class="font-medium">Ana García</div>
           </div>
-          <p class="text-gray-600 italic">"{{ testimonio.comentario }}"</p>
+
+          <!-- Testimonio 2 -->
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+              <div class="flex text-yellow-400">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-gray-600 mb-4">
+              "Contratamos sus servicios para nuestra boda y quedamos encantados. La decoración
+              floral fue exactamente lo que habíamos imaginado."
+            </p>
+            <div class="font-medium">Carlos Martínez</div>
+          </div>
+
+          <!-- Testimonio 3 -->
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+              <div class="flex text-yellow-400">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <p class="text-gray-600 mb-4">
+              "Compro regularmente plantas para mi oficina y siempre están en perfecto estado. El
+              servicio al cliente es excelente y resuelven todas mis dudas."
+            </p>
+            <div class="font-medium">Laura Rodríguez</div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Servicios -->
-  <section class="py-12">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Nuestros Servicios</h2>
-      <div class="grid gap-6 md:grid-cols-3">
-        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-          <div
-            class="bg-emerald-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4"
+    <!-- Newsletter -->
+    <section class="container mx-auto px-4 py-16">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl font-light text-gray-800 mb-4">¡Suscríbete a nuestro newsletter!</h2>
+        <p class="text-gray-600 mb-8">
+          Recibe ofertas exclusivas, novedades y consejos para el cuidado de tus plantas.
+        </p>
+        <form @submit.prevent="suscribirNewsletter" class="flex flex-col sm:flex-row gap-3">
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Tu correo electrónico"
+            required
+            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <button
+            type="submit"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
-            <span class="text-2xl">🚚</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Entrega a domicilio</h3>
-          <p class="text-gray-600">
-            Llevamos tus flores frescas donde las necesites en menos de 24 horas
-          </p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-          <div
-            class="bg-emerald-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4"
-          >
-            <span class="text-2xl">🎁</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Regalos personalizados</h3>
-          <p class="text-gray-600">Diseñamos arreglos únicos para cada ocasión especial</p>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-          <div
-            class="bg-emerald-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4"
-          >
-            <span class="text-2xl">💐</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Suscripción floral</h3>
-          <p class="text-gray-600">
-            Recibe flores frescas periódicamente con nuestros planes mensuales
-          </p>
-        </div>
+            Suscribirme
+          </button>
+        </form>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <Footer />
+    <Footer />
+  </div>
 </template>
 
 <script setup>
-import Carousel from '@/components/Carousel.vue'
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
-import Card from '../components/Card.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useToast } from 'vue-toastification'
+import CarritoService from '@/services/CarritoService'
 import axios from 'axios'
+import Carousel from '@/components/Carousel.vue'
+import Card from '@/components/Card.vue'
+import Navbar from '@/components/Navbar.vue'
+import Footer from '@/components/Footer.vue'
+import { useRouter } from 'vue-router'
 
-const productos = ref([])
-const searchQuery = ref('')
-const isLoading = ref(true)
+const router = useRouter()
+const toast = useToast()
+const email = ref('')
+const loading = ref(false)
 const error = ref(null)
+const productosDestacados = ref([])
+const categorias = ref([])
+const articulosRecientes = ref([])
+const loadingCategorias = ref(false)
+const errorCategorias = ref(null)
+const loadingArticulos = ref(false)
+const errorArticulos = ref(null)
 
-// Datos para categorías adaptados a una floristería
-const categorias = ref([
-  { nombre: 'Ramos', cantidadProductos: 24, icono: '💐' },
-  { nombre: 'Plantas', cantidadProductos: 18, icono: '🌱' },
-  { nombre: 'Eventos', cantidadProductos: 15, icono: '🎊' },
-  { nombre: 'Decoración', cantidadProductos: 21, icono: '🏡' },
-])
-
-// Testimonios adaptados al contexto de floristería
-const testimonios = ref([
-  {
-    nombre: 'María López',
-    iniciales: 'ML',
-    comentario:
-      'El ramo que envié a mi madre por su cumpleaños era precioso. Las flores duraron más de dos semanas. ¡Increíble calidad!',
-  },
-  {
-    nombre: 'Carlos García',
-    iniciales: 'CG',
-    comentario:
-      'Contratamos LaBloom para decorar nuestra boda y superaron todas nuestras expectativas. Profesionales y creativos.',
-  },
-  {
-    nombre: 'Laura Martínez',
-    iniciales: 'LM',
-    comentario:
-      'Me encanta la suscripción mensual de flores. Siempre recibo arreglos preciosos y diferentes.',
-  },
-])
-
-onMounted(async () => {
-  console.log('Cargando catálogo de flores...')
+//Cargar productos destacados
+const cargarProductosDestacados = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/producto/')
-    productos.value = response.data
-    console.log(response.data)
+    loading.value = true
+    error.value = null
+    const response = await axios.get('http://localhost:8000/api/producto/destacados/')
+
+    productosDestacados.value = response.data.map((producto) => ({
+      id: producto.id,
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: parseFloat(producto.precio),
+      rutaImg: producto.rutaImg,
+      categoria: producto.categoria || 'General',
+    }))
   } catch (err) {
-    console.error('Error al obtener productos:', err)
-    error.value = 'No pudimos cargar nuestro catálogo. Por favor, intenta más tarde.'
+    console.error('Error al cargar productos destacados:', err)
+    error.value =
+      'No pudimos cargar los productos destacados. Por favor, intenta de nuevo más tarde.'
   } finally {
-    isLoading.value = false
+    loading.value = false
   }
-})
-
-const filteredProducts = computed(() => {
-  if (!searchQuery.value) return productos.value
-  return productos.value.filter((producto) =>
-    producto.nombre.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  )
-})
-
-const searchProductos = (query) => {
-  searchQuery.value = query
 }
+
+//Cargar categorías
+const cargarCategorias = async () => {
+  try {
+    loadingCategorias.value = true
+    errorCategorias.value = null
+    const response = await axios.get('http://localhost:8000/api/categoria/')
+
+    categorias.value = response.data
+      .map((categoria) => ({
+        id: categoria.id,
+        nombre: categoria.nombre,
+        descripcion: categoria.descripcion,
+        rutaImg: categoria.rutaImg || obtenerImagenPredeterminada(categoria.id),
+      }))
+      //Limitamos a 4 categorías para mostrar en la página principal
+      .slice(0, 4)
+  } catch (err) {
+    console.error('Error al cargar categorías:', err)
+    errorCategorias.value = 'No pudimos cargar las categorías.'
+  } finally {
+    loadingCategorias.value = false
+  }
+}
+
+//Función para obtener una imagen predeterminada según el ID de la categoría
+const obtenerImagenPredeterminada = (id) => {
+  const imagenesPredeterminadas = [
+    'https://images.unsplash.com/photo-1567696153798-068c25a13af1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1561181286-d5c73133aeda?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1519095614420-850b5671ac7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1531102703131-0478e728c67c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+  ]
+  return imagenesPredeterminadas[(id - 1) % imagenesPredeterminadas.length]
+}
+
+// Cargar artículos recientes del blog
+const cargarArticulosRecientes = async () => {
+  try {
+    loadingArticulos.value = true
+    errorArticulos.value = null
+
+    const response = await axios.get('http://localhost:8000/api/articulo/')
+
+    articulosRecientes.value = response.data
+      .map((articulo) => ({
+        id: articulo.id,
+        titulo: articulo.titulo,
+        resumen: articulo.contenido.substring(0, 120) + '...',
+        fecha: formatearFecha(articulo.created_at),
+        imagen:
+          articulo.rutaImg ||
+          'https://images.unsplash.com/photo-1563241860-3cccea45e666?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+      }))
+      //Limitamos a los 3 artículos más recientes
+      .slice(0, 3)
+  } catch (err) {
+    console.error('Error al cargar artículos del blog:', err)
+    errorArticulos.value = 'No pudimos cargar los artículos del blog.'
+  } finally {
+    loadingArticulos.value = false
+  }
+}
+
+//Formatear fecha para mostrarla en formato legible
+const formatearFecha = (fechaStr) => {
+  if (!fechaStr) return 'Fecha no disponible'
+
+  const fecha = new Date(fechaStr)
+  return fecha.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
+//Verificar si hay un token de acceso
+const checkLoginStatus = () => {
+  const token = localStorage.getItem('access_token')
+  return !!token
+}
+
+//Agregar producto al carrito
+const agregarAlCarrito = async (productoId) => {
+  if (!checkLoginStatus()) {
+    toast.warning('Necesitas iniciar sesión para añadir productos al carrito')
+    router.push('/login')
+    return
+  }
+
+  try {
+    await CarritoService.agregarProducto(productoId, 1)
+    toast.success('Producto añadido al carrito correctamente')
+  } catch (error) {
+    console.error('Error al añadir al carrito:', error)
+    toast.error('No se pudo añadir el producto al carrito')
+  }
+}
+
+//Suscripción al newsletter
+const suscribirNewsletter = () => {
+  //Aquí iría la lógica para procesar la suscripción
+  toast.success(`¡Gracias por suscribirte! Recibirás nuestras novedades en ${email.value}`)
+  email.value = ''
+}
+
+//Cargar datos al montar el componente
+onMounted(() => {
+  cargarProductosDestacados()
+  cargarCategorias()
+  cargarArticulosRecientes()
+})
 </script>
 
 <style scoped>
-/* Animaciones para los elementos */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.grid > div {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* Sombreado suave para las tarjetas */
-.shadow-md {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.shadow-lg {
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Efecto hover mejorado para los botones */
-button.rounded-full {
-  transition: all 0.3s ease;
-}
-
-button.rounded-full:hover {
-  transform: translateY(-2px);
-}
+/* Puedes añadir estilos específicos aquí si los necesitas */
 </style>

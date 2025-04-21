@@ -66,8 +66,8 @@
             </router-link>
           </div>
           <button
-            class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transform hover:scale-105 transition-transform duration-200"
-            @click="addCart"
+            @click="$emit('agregar-al-carrito', id)"
+            class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded-md"
           >
             Añadir al carrito
           </button>
@@ -84,7 +84,7 @@ import CarritoService from '@/services/CarritoService'
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
-const rating = ref(4) // Valor por defecto o podría ser una prop también
+const rating = ref(4)
 
 const props = defineProps({
   id: Number,

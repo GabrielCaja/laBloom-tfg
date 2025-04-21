@@ -16,6 +16,7 @@
         <!-- Barra de busqueda -->
         <div class="flex-1 flex justify-center">
           <input
+            v-if="mostrarBusqueda"
             v-model="searchQuery"
             @input="searchProductos"
             type="text"
@@ -76,7 +77,7 @@
               />
             </svg>
           </router-link>
-          <router-link to="/carrito" class="hover:text-gray-600">
+          <router-link v-if="logeado" to="/carrito" class="hover:text-green-600 text-green-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -119,30 +120,43 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 const logeado = ref(false)
 const searchQuery = ref('')
 
 const emit = defineEmits(['search-productos'])
 
-// Verificar si hay un token al cargar el componente
+//Propiedad para determinar si se debe mostrar la barra de búsqueda
+const mostrarBusqueda = computed(() => {
+  return (
+    route.name === 'home' ||
+    route.name === 'productos' ||
+    route.path === '/' ||
+    route.path === '/productos'
+  )
+})
+
+//Verificar si hay un token al cargar el componente
 onMounted(() => {
   checkLoginStatus()
 })
+
+//Función para verificar el estado de login
+const checkLoginStatus = () => {
+  const token = localStorage.getItem('access_token')
+  logeado.value = !!token
+}
+
 //Funcion para cerrar sesion
 const logout = () => {
   localStorage.removeItem('access_token')
   localStorage.removeItem('es_admin')
   logeado.value = false
   router.push('/')
-}
-// Función para verificar el estado de login
-const checkLoginStatus = () => {
-  const token = localStorage.getItem('access_token')
-  logeado.value = !!token
 }
 
 const searchProductos = () => {
