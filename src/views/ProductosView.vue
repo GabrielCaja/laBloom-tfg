@@ -248,8 +248,7 @@ import Card from '@/components/Card.vue'
 import CarritoService from '@/services/CarritoService'
 
 const toast = useToast()
-// ...existing code...
-// Estados
+//Estados
 const productos = ref([])
 const categorias = ref([])
 const cargando = ref(true)
@@ -259,9 +258,8 @@ const categoriaSeleccionada = ref('')
 const ordenarPor = ref('nombre_asc')
 const precioMaximo = ref(1000)
 const productosFiltrados = ref([])
-const modoVisualizacion = ref('grid') // Nuevo: 'grid' o 'list'
-
-// Obtener datos de la API de productos
+const modoVisualizacion = ref('grid')
+//Obtener datos de la API de productos
 const cargarProductos = async () => {
   try {
     cargando.value = true
@@ -275,13 +273,11 @@ const cargarProductos = async () => {
       descripcion: producto.descripcion,
       precio: parseFloat(producto.precio),
       rutaImg: producto.rutaImg,
-      categoria_id: producto.categoria_id, // Asegúrate de que tu API devuelve el id de la categoría
-      categoria_nombre: producto.categoria_nombre || 'General', // Nombre de la categoría si lo tienes
+      categoria_id: producto.categoria_id,
+      categoria_nombre: producto.categoria_nombre || 'General',
       fecha: new Date(producto.created_at || Date.now()),
     }))
 
-    // Ya no extraemos las categorías de los productos aquí
-    // En su lugar, llamamos a la función para cargar categorías de la API
     await cargarCategorias()
 
     aplicarFiltros()
@@ -386,9 +382,7 @@ onMounted(() => {
 
 /* Mejora visual al pasar el ratón sobre las tarjetas */
 :deep(.card-container) {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 :deep(.card-container:hover) {
