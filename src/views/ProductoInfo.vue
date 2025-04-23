@@ -69,11 +69,7 @@
           <!-- Encabezado -->
           <div class="mb-6">
             <h1 class="text-3xl font-bold text-gray-800 mb-1">{{ producto.nombre }}</h1>
-            <div class="flex items-center gap-2 mb-4">
-              <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                {{ producto.categoria || 'General' }}
-              </span>
-            </div>
+            <div class="flex items-center gap-2 mb-4"></div>
             <div class="text-3xl font-bold text-indigo-600 mb-4">
               {{ producto.precio.toFixed(2) }}€
             </div>
@@ -305,7 +301,6 @@ const cargarProducto = async () => {
       descripcion: respuesta.data.descripcion,
       precio: parseFloat(respuesta.data.precio),
       rutaImg: respuesta.data.rutaImg,
-      categoria: respuesta.data.categoria || 'General',
       fecha: new Date(respuesta.data.created_at || Date.now()),
       stock: respuesta.data.stock || 0,
       visible: respuesta.data.visible === true || respuesta.data.visible === 1,

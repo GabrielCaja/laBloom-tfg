@@ -15,6 +15,9 @@
           <h3 class="text-xl font-bold text-gray-800">{{ nombre }}</h3>
         </div>
 
+        <p class="text-gray-600 mb-4 line-clamp-3">
+          {{ descripcion }}
+        </p>
         <!-- Sistema de valoración -->
         <div class="flex items-center mb-3">
           <div class="flex text-yellow-400">
@@ -33,10 +36,34 @@
           </div>
           <span class="ml-2 text-sm text-gray-600">{{ rating }} de 5</span>
         </div>
-
-        <p class="text-gray-600 mb-4 line-clamp-3">
-          {{ descripcion }}
-        </p>
+        <!-- Sistema de disponibilidad -->
+        <div class="mt-2">
+          <div v-if="!visible" class="text-xs text-red-600 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            No disponible
+          </div>
+          <div
+            v-else-if="stock > 0"
+            class="text-xs font-bold"
+            :class="{ 'text-green-600': stock > 10, 'text-red-600': stock <= 10 }"
+          >
+            {{ stock > 10 ? 'En stock' : `¡Solo quedan ${stock}!` }}
+          </div>
+          <div v-else class="text-xs text-orange-600">Agotado</div>
+        </div>
 
         <!-- Footer con botones -->
         <div class="pt-3 border-t border-gray-100">
@@ -77,34 +104,6 @@
           >
             {{ !visible || stock <= 0 ? 'No disponible' : 'Añadir al carrito' }}
           </button>
-          <!-- Sistema de disponibilidad -->
-          <div class="mt-2">
-            <div v-if="!visible" class="text-xs text-red-600 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-3 w-3 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-              No disponible
-            </div>
-            <div
-              v-else-if="stock > 0"
-              class="text-xs"
-              :class="{ 'text-green-600': stock > 10, 'text-red-600': stock <= 10 }"
-            >
-              {{ stock > 10 ? 'En stock' : `¡Solo quedan ${stock}!` }}
-            </div>
-            <div v-else class="text-xs text-orange-600">Agotado</div>
-          </div>
         </div>
       </div>
     </div>
