@@ -55,14 +55,14 @@
             @change="aplicarFiltros"
             type="range"
             min="0"
-            max="1000"
-            step="10"
+            max="100"
+            step="5"
             class="w-full accent-indigo-600"
           />
           <div class="flex justify-between text-xs text-gray-500 mt-1">
             <span>0€</span>
-            <span>500€</span>
-            <span>1000€</span>
+            <span>50</span>
+            <span>100€</span>
           </div>
         </div>
 
@@ -173,6 +173,8 @@
           :descripcion="producto.descripcion"
           :precio="producto.precio"
           :imagen="producto.rutaImg"
+          :stock="producto.stock"
+          :visible="producto.visible"
           @agregar-al-carrito="handleAgregarAlCarrito"
         />
       </div>
@@ -196,6 +198,54 @@
           </div>
           <div class="flex-1 flex flex-col">
             <h3 class="text-xl font-medium text-gray-800">{{ producto.nombre }}</h3>
+
+            <!-- Indicador de disponibilidad -->
+            <div class="my-1">
+              <div v-if="!producto.visible" class="flex items-center text-sm text-red-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                <span>Producto no disponible</span>
+              </div>
+              <div v-else-if="producto.stock > 0" class="flex items-center text-sm text-green-600">
+                <span :class="{ 'text-red-600 font-medium': producto.stock <= 10 }">
+                  {{
+                    producto.stock > 10
+                      ? 'Disponible en stock'
+                      : `¡Solo quedan ${producto.stock} unidades!`
+                  }}
+                </span>
+              </div>
+              <div v-else class="flex items-center text-sm text-orange-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Agotado temporalmente</span>
+              </div>
+            </div>
+
             <p class="text-gray-600 my-2 line-clamp-3">{{ producto.descripcion }}</p>
             <div class="mt-auto flex flex-wrap items-center justify-between gap-4">
               <span class="text-xl font-bold text-indigo-600"
@@ -210,9 +260,17 @@
                 </router-link>
                 <button
                   @click="handleAgregarAlCarrito(producto.id)"
-                  class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+                  :disabled="!producto.visible || producto.stock <= 0"
+                  :class="[
+                    'px-4 py-2 rounded-md transition-colors',
+                    !producto.visible || producto.stock <= 0
+                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-700 text-white',
+                  ]"
                 >
-                  Añadir al carrito
+                  {{
+                    !producto.visible || producto.stock <= 0 ? 'No disponible' : 'Añadir al carrito'
+                  }}
                 </button>
               </div>
             </div>
@@ -263,7 +321,7 @@ import CarritoService from '@/services/CarritoService'
 const toast = useToast()
 const router = useRouter()
 
-// Estados
+//Estados
 const productos = ref([])
 const categorias = ref([])
 const cargando = ref(true)
@@ -271,11 +329,10 @@ const error = ref(null)
 const terminoBusqueda = ref('')
 const categoriaSeleccionada = ref('')
 const ordenarPor = ref('nombre_asc')
-const precioMaximo = ref(1000)
+const precioMaximo = ref(100)
 const productosFiltrados = ref([])
 const modoVisualizacion = ref('grid')
-const logeado = ref(false) // Añadimos la variable como ref
-
+const logeado = ref(false)
 //Obtener datos de la API de productos
 const cargarProductos = async () => {
   try {
@@ -284,16 +341,21 @@ const cargarProductos = async () => {
 
     const respuesta = await axios.get('http://localhost:8000/api/producto/')
 
-    productos.value = respuesta.data.map((producto) => ({
-      id: producto.id,
-      nombre: producto.nombre,
-      descripcion: producto.descripcion,
-      precio: parseFloat(producto.precio),
-      rutaImg: producto.rutaImg,
-      categoria_id: producto.categoria_id,
-      categoria_nombre: producto.categoria_nombre || 'General',
-      fecha: new Date(producto.created_at || Date.now()),
-    }))
+    //Filtrar solo los productos visibles antes de procesarlos
+    productos.value = respuesta.data
+      .filter((producto) => producto.visible === true || producto.visible === 1)
+      .map((producto) => ({
+        id: producto.id,
+        nombre: producto.nombre,
+        descripcion: producto.descripcion,
+        precio: parseFloat(producto.precio),
+        rutaImg: producto.rutaImg,
+        categoria_id: producto.categoria_id,
+        categoria_nombre: producto.categoria_nombre || 'General',
+        fecha: new Date(producto.created_at || Date.now()),
+        stock: producto.stock || 0,
+        visible: true,
+      }))
 
     await cargarCategorias()
 
@@ -369,7 +431,7 @@ const reiniciarFiltros = () => {
   terminoBusqueda.value = ''
   categoriaSeleccionada.value = ''
   ordenarPor.value = 'nombre_asc'
-  precioMaximo.value = 1000
+  precioMaximo.value = 100
   aplicarFiltros()
   toast.info('Filtros restablecidos')
 }
@@ -394,8 +456,21 @@ const handleAgregarAlCarrito = (productoId) => {
     return
   }
 
-  //Si el usuario está autenticado, procedemos a añadir al carrito
-  //Añadimos una cantidad por defecto de 1
+  // Buscar el producto por ID
+  const producto = productos.value.find((p) => p.id === productoId)
+
+  // Verificar disponibilidad y stock
+  if (!producto.visible) {
+    toast.error('Este producto no está disponible actualmente.')
+    return
+  }
+
+  if (producto.stock <= 0) {
+    toast.error('Este producto está agotado.')
+    return
+  }
+
+  // Añadimos una cantidad por defecto de 1
   CarritoService.agregarProducto(productoId, 1)
     .then(() => {
       toast.success('Producto añadido al carrito correctamente')

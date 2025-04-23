@@ -118,6 +118,35 @@
                 />
               </div>
             </div>
+            <!-- Confirmar email -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="confirmarEmail">
+                Confirmar nuevo email
+              </label>
+              <div class="relative rounded-md shadow-sm">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+                    />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                </div>
+                <input
+                  id="confirmarEmail"
+                  type="email"
+                  class="w-full pl-10 border border-gray-300 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  v-model="confirmarEmail"
+                  :class="{
+                    'border-red-500 focus:ring-red-500 focus:border-red-500':
+                      emailNoCoinciden && confirmarEmail,
+                  }"
+                />
+              </div>
+              <p v-if="emailNoCoinciden && confirmarEmail" class="mt-1 text-sm text-red-600">
+                Los correos electrónicos no coinciden
+              </p>
+            </div>
 
             <!-- Grupo de contraseñas -->
             <div class="border border-gray-100 rounded-lg p-5 bg-gray-50">
@@ -228,7 +257,7 @@
 <script setup>
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 
 const usuario = ref({
@@ -240,8 +269,14 @@ const usuario = ref({
 })
 
 const confirmarPassword = ref('')
+const confirmarEmail = ref('') // Nuevo ref para confirmar email
 const mensaje = ref('')
 const mensajeExito = ref(false)
+
+// Computed property para verificar si los emails coinciden
+const emailNoCoinciden = computed(
+  () => confirmarEmail.value && usuario.value.email !== confirmarEmail.value,
+)
 
 onMounted(() => {
   cargarPerfil()
@@ -261,6 +296,9 @@ const cargarPerfil = async () => {
       ...response.data,
       password: '',
     }
+
+    //También actualizamos el confirmarEmail con el email actual
+    confirmarEmail.value = response.data.email
   } catch (error) {
     console.error('Error al cargar perfil:', error)
     mensaje.value = 'No se pudo cargar la información del perfil'
@@ -270,7 +308,14 @@ const cargarPerfil = async () => {
 
 const actualizarPerfil = async () => {
   try {
-    //Validación básica
+    //Validación del email
+    if (emailNoCoinciden.value) {
+      mensaje.value = 'Los correos electrónicos no coinciden'
+      mensajeExito.value = false
+      return
+    }
+
+    //Validación de las contraseñas
     if (usuario.value.password && usuario.value.password !== confirmarPassword.value) {
       mensaje.value = 'Las contraseñas no coinciden'
       mensajeExito.value = false
@@ -294,7 +339,7 @@ const actualizarPerfil = async () => {
     mensaje.value = 'Perfil actualizado con éxito'
     mensajeExito.value = true
 
-    //Limpiar campo de contraseña
+    //Limpiar campos de contraseña
     usuario.value.password = ''
     confirmarPassword.value = ''
   } catch (error) {

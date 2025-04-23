@@ -81,7 +81,7 @@
 
           <!-- Estado y disponibilidad -->
           <div class="mb-6">
-            <div class="flex items-center text-sm text-green-600 mb-4">
+            <div v-if="!producto.visible" class="flex items-center text-sm text-red-600 mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5 mr-1"
@@ -93,10 +93,39 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M5 13l4 4L19 7"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              Disponible en stock
+              Producto no disponible
+            </div>
+            <div
+              v-else-if="producto.stock > 0"
+              class="flex items-center text-sm text-green-600 mb-4"
+            >
+              <span :class="{ 'text-red-600 font-medium': producto.stock <= 10 }">
+                {{
+                  producto.stock > 10
+                    ? 'Disponible en stock'
+                    : `¡Solo quedan ${producto.stock} unidades!`
+                }}
+              </span>
+            </div>
+            <div v-else class="flex items-center text-sm text-orange-600 mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Agotado temporalmente
             </div>
           </div>
 
@@ -113,6 +142,7 @@
                 <button
                   @click="cantidad > 1 ? cantidad-- : null"
                   class="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600"
+                  :disabled="!producto.visible || producto.stock <= 0"
                 >
                   -
                 </button>
@@ -120,18 +150,28 @@
                   type="number"
                   v-model="cantidad"
                   min="1"
+                  :max="producto.stock"
                   class="w-full text-center border-none focus:ring-0 focus:outline-none"
+                  :disabled="!producto.visible || producto.stock <= 0"
+                  @change="validarCantidad"
                 />
                 <button
-                  @click="cantidad++"
+                  @click="cantidad < producto.stock ? cantidad++ : null"
                   class="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600"
+                  :disabled="cantidad >= producto.stock || !producto.visible || producto.stock <= 0"
                 >
                   +
                 </button>
               </div>
               <button
                 @click="agregarAlCarrito"
-                class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md flex items-center justify-center transition-colors"
+                :disabled="!producto.visible || producto.stock <= 0"
+                :class="[
+                  'flex-1 px-6 py-3 rounded-md flex items-center justify-center transition-colors',
+                  !producto.visible || producto.stock <= 0
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white',
+                ]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +187,9 @@
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                Añadir al carrito
+                {{
+                  !producto.visible || producto.stock <= 0 ? 'No disponible' : 'Añadir al carrito'
+                }}
               </button>
             </div>
           </div>
@@ -185,6 +227,7 @@
           <div v-if="tabActiva === 'detalles'" class="prose prose-indigo max-w-none">
             <ul class="list-disc pl-6 space-y-2">
               <li>Categoría: {{ producto.categoria || 'General' }}</li>
+              <li>Stock disponible: {{ producto.stock }} unidades</li>
               <li>Fecha de publicación: {{ formatearFecha(producto.fecha) }}</li>
               <li>Referencia: #{{ producto.id }}</li>
             </ul>
@@ -264,6 +307,8 @@ const cargarProducto = async () => {
       rutaImg: respuesta.data.rutaImg,
       categoria: respuesta.data.categoria || 'General',
       fecha: new Date(respuesta.data.created_at || Date.now()),
+      stock: respuesta.data.stock || 0,
+      visible: respuesta.data.visible === true || respuesta.data.visible === 1,
     }
 
     //Cargar productos relacionados de la misma categoría
@@ -286,7 +331,9 @@ const cargarProductosRelacionados = async () => {
 
     //Filtrar productos de la misma categoría, excluyendo el actual
     const relacionados = respuesta.data
-      .filter((p) => p.categoria === producto.value.categoria && p.id !== producto.value.id)
+      .filter(
+        (p) => p.categoria === producto.value.categoria && p.id !== producto.value.id && p.visible,
+      )
       .map((p) => ({
         id: p.id,
         nombre: p.nombre,
@@ -300,6 +347,20 @@ const cargarProductosRelacionados = async () => {
     productosRelacionados.value = relacionados
   } catch (err) {
     console.error('Error al cargar productos relacionados:', err)
+  }
+}
+
+//Validar quea cantidad seleccionada no exceda el stock disponible
+const validarCantidad = () => {
+  if (!producto.value) return
+
+  if (cantidad.value > producto.value.stock) {
+    cantidad.value = producto.value.stock
+    toast.info(`Solo hay ${producto.value.stock} unidades disponibles`)
+  }
+
+  if (cantidad.value < 1) {
+    cantidad.value = 1
   }
 }
 
@@ -317,8 +378,25 @@ const formatearFecha = (fecha) => {
 const agregarAlCarrito = async () => {
   if (!producto.value) return
 
+  //Verificar disponibilidad y stock antes de añadir al carrito
+  if (!producto.value.visible) {
+    toast.error('Este producto no está disponible actualmente.')
+    return
+  }
+
+  if (producto.value.stock <= 0) {
+    toast.error('Este producto está agotado.')
+    return
+  }
+
+  if (cantidad.value > producto.value.stock) {
+    cantidad.value = producto.value.stock
+    toast.warning(`Solo hay ${producto.value.stock} unidades disponibles`)
+    return
+  }
+
   try {
-    // Llamar al método con los parámetros correctos: ID y cantidad
+    //Llamar al método con los parámetros correctos: ID y cantidad
     await CarritoService.agregarProducto(producto.value.id, cantidad.value)
 
     toast.success(
