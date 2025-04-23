@@ -112,7 +112,7 @@
           </div>
 
           <button
-            @click="procesarPedido"
+            @click="procederAlPago"
             class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors transform hover:scale-[1.02] duration-200 flex items-center justify-center"
           >
             Proceder al pago
@@ -155,7 +155,7 @@ const loading = ref(false)
 const error = ref(null)
 const direccionEnvio = ref('')
 const procesandoPedido = ref(false)
-const userId = ref(1) // Deberías obtener esto de tu sistema de autenticación
+const userId = ref(1)
 
 //Obtener el carrito desde la API
 const cargarCarrito = async () => {
@@ -186,7 +186,26 @@ const cargarCarrito = async () => {
     loading.value = false
   }
 }
+//Función para navegar a la página de pagos
+// Actualiza la función procederAlPago
+const procederAlPago = () => {
+  // Verificar si el usuario ha iniciado sesión - esta parte está bien
+  const token = localStorage.getItem('access_token')
+  if (!token) {
+    toast.warning('Necesitas iniciar sesión para continuar con la compra')
+    router.push('/login')
+    return
+  }
 
+  // Elimina esta comprobación ya que la interfaz no mostrará el botón si no hay productos
+  // if (items.value.length === 0) {
+  //   toast.warning('Tu carrito está vacío')
+  //   return
+  // }
+
+  // Navegar a la página de pagos
+  router.push('/pagos')
+}
 //Funciones para manipular cantidades
 const incrementarCantidad = async (index) => {
   try {

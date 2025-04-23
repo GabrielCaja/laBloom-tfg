@@ -66,11 +66,45 @@
             </router-link>
           </div>
           <button
-            @click="$emit('agregar-al-carrito', id)"
-            class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded-md"
+            @click="addCart"
+            :disabled="!visible || stock <= 0"
+            :class="[
+              'text-sm px-3 py-1 rounded-md',
+              !visible || stock <= 0
+                ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                : 'bg-green-600 hover:bg-green-700 text-white',
+            ]"
           >
-            Añadir al carrito
+            {{ !visible || stock <= 0 ? 'No disponible' : 'Añadir al carrito' }}
           </button>
+          <!-- Sistema de disponibilidad -->
+          <div class="mt-2">
+            <div v-if="!visible" class="text-xs text-red-600 flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3 w-3 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              No disponible
+            </div>
+            <div
+              v-else-if="stock > 0"
+              class="text-xs"
+              :class="{ 'text-green-600': stock > 10, 'text-red-600': stock <= 10 }"
+            >
+              {{ stock > 10 ? 'En stock' : `¡Solo quedan ${stock}!` }}
+            </div>
+            <div v-else class="text-xs text-orange-600">Agotado</div>
+          </div>
         </div>
       </div>
     </div>
@@ -92,20 +126,33 @@ const props = defineProps({
   descripcion: String,
   precio: Number,
   imagen: String,
+  stock: {
+    type: Number,
+    default: 0,
+  },
+  visible: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const addCart = async () => {
   try {
-    //Llamamos al método del servicio para agregar el producto
-    //Pasamos el ID del producto y cantidad 1 por defecto
+    if (!props.visible) {
+      toast.error('Este producto no está disponible actualmente.')
+      return
+    }
+
+    if (props.stock <= 0) {
+      toast.error('Este producto está agotado.')
+      return
+    }
+
+    // Llamamos al método del servicio para agregar el producto
     const response = await CarritoService.agregarProducto(props.id, 1)
-
-    //Mostramos una notificación de éxito
     toast.success(`${props.nombre} añadido al carrito`)
-
     console.log('Producto añadido al carrito', response)
   } catch (error) {
-    //Mostramos una notificación de error
     toast.error('No se pudo añadir el producto al carrito')
     console.error('Error al añadir producto al carrito:', error)
   }
