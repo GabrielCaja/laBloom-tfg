@@ -145,11 +145,7 @@
             </router-link>
           </div>
           <div class="md:w-1/3">
-            <img
-              src="https://images.unsplash.com/photo-1594663653925-365bcbf7ef86?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-              alt="Promoción"
-              class="rounded-lg shadow-lg"
-            />
+            <img src="" alt="Promoción" class="rounded-lg shadow-lg" />
           </div>
         </div>
       </div>
