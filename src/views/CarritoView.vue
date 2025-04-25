@@ -166,7 +166,6 @@ const cargarCarrito = async () => {
     const response = await CarritoService.getCarrito()
 
     if (response && response.productos) {
-      //Transformamos los productos recibidos al formato que espera el componente
       items.value = response.productos.map((producto) => ({
         id: producto.id,
         nombre: producto.nombre,
@@ -186,24 +185,14 @@ const cargarCarrito = async () => {
     loading.value = false
   }
 }
-//Función para navegar a la página de pagos
-// Actualiza la función procederAlPago
 const procederAlPago = () => {
-  // Verificar si el usuario ha iniciado sesión - esta parte está bien
+  //Verificar si el usuario ha iniciado sesión
   const token = localStorage.getItem('access_token')
   if (!token) {
     toast.warning('Necesitas iniciar sesión para continuar con la compra')
     router.push('/login')
     return
   }
-
-  // Elimina esta comprobación ya que la interfaz no mostrará el botón si no hay productos
-  // if (items.value.length === 0) {
-  //   toast.warning('Tu carrito está vacío')
-  //   return
-  // }
-
-  // Navegar a la página de pagos
   router.push('/pagos')
 }
 //Funciones para manipular cantidades
@@ -258,7 +247,6 @@ const total = computed(() => {
   return subtotal.value + iva.value
 })
 
-//Formatear precio con 2 decimales
 const formatPrice = (price) => {
   return price.toFixed(2)
 }

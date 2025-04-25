@@ -213,7 +213,7 @@
           </div>
           <div>
             <h3 class="font-medium text-gray-900">Correo Electrónico</h3>
-            <p class="text-indigo-600 mt-1">info@ejemplo.com</p>
+            <p class="text-indigo-600 mt-1">info@labloom.com</p>
           </div>
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
@@ -235,7 +235,7 @@
           </div>
           <div>
             <h3 class="font-medium text-gray-900">Teléfono</h3>
-            <p class="text-indigo-600 mt-1">+34 900 123 456</p>
+            <p class="text-indigo-600 mt-1">+34 XXX XXX XX</p>
           </div>
         </div>
       </div>
