@@ -236,22 +236,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Productos relacionados -->
-    <div class="mt-10">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6">Productos relacionados</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <Card
-          v-for="prod in productosRelacionados"
-          :key="prod.id"
-          :id="prod.id"
-          :nombre="prod.nombre"
-          :descripcion="prod.descripcion"
-          :precio="prod.precio"
-          :imagen="prod.rutaImg"
-        />
-      </div>
-    </div>
   </div>
 
   <Footer />
@@ -305,43 +289,12 @@ const cargarProducto = async () => {
       stock: respuesta.data.stock || 0,
       visible: respuesta.data.visible === true || respuesta.data.visible === 1,
     }
-
-    //Cargar productos relacionados de la misma categoría
-    cargarProductosRelacionados()
   } catch (err) {
     console.error('Error al cargar el producto:', err)
     error.value =
       'No pudimos cargar la información del producto. Por favor, inténtalo de nuevo más tarde.'
   } finally {
     cargando.value = false
-  }
-}
-
-//Cargar productos relacionados
-const cargarProductosRelacionados = async () => {
-  try {
-    if (!producto.value || !producto.value.categoria) return
-
-    const respuesta = await axios.get('http://localhost:8000/api/producto/')
-
-    //Filtrar productos de la misma categoría, excluyendo el actual
-    const relacionados = respuesta.data
-      .filter(
-        (p) => p.categoria === producto.value.categoria && p.id !== producto.value.id && p.visible,
-      )
-      .map((p) => ({
-        id: p.id,
-        nombre: p.nombre,
-        descripcion: p.descripcion,
-        precio: parseFloat(p.precio),
-        rutaImg: p.rutaImg,
-        categoria: p.categoria || 'General',
-      }))
-      .slice(0, 4) //Limitamos a 4 productos relacionados
-
-    productosRelacionados.value = relacionados
-  } catch (err) {
-    console.error('Error al cargar productos relacionados:', err)
   }
 }
 
