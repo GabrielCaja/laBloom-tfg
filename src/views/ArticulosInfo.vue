@@ -161,7 +161,6 @@ const route = useRoute()
 const toast = useToast()
 
 const articulo = ref(null)
-const articulosRelacionados = ref([])
 const cargando = ref(true)
 const error = ref(null)
 
@@ -187,34 +186,12 @@ const cargarArticulo = async () => {
     const respuesta = await axios.get(`http://localhost:8000/api/articulo/${id}/`)
 
     articulo.value = respuesta.data
-
-    cargarArticulosRelacionados()
   } catch (err) {
     console.error('Error al cargar el artículo:', err)
     error.value =
       'No pudimos cargar la información del artículo. Por favor, inténtalo de nuevo más tarde.'
   } finally {
     cargando.value = false
-  }
-}
-
-//Cargamos artículos relacionados
-const cargarArticulosRelacionados = async () => {
-  try {
-    const respuesta = await axios.get('http://localhost:8000/api/articulo/')
-
-    //Excluir el artículo actual y limitar a 3 artículos
-    articulosRelacionados.value = respuesta.data
-      .filter((a) => a.id !== articulo.value.id)
-      .slice(0, 3)
-      .map((a) => ({
-        id: a.id,
-        titulo: a.titulo,
-        fecha: formatearFecha(a.created_at),
-        rutaImg: a.rutaImg,
-      }))
-  } catch (err) {
-    console.error('Error al cargar artículos relacionados:', err)
   }
 }
 
