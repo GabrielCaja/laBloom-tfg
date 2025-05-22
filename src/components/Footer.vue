@@ -6,10 +6,15 @@
           <p class="text-gray-600 text-sm">© 2024 LaBloom. Todos los derechos reservados.</p>
         </div>
         <div class="flex space-x-6">
-          <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">
+          <router-link
+            to="/sobre-nosotros"
+            class="text-gray-600 hover:text-gray-900 transition-colors"
+          >
             Sobre nosotros
-          </a>
-          <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors"> Contacto </a>
+          </router-link>
+          <router-link to="/contacto" class="text-gray-600 hover:text-gray-900 transition-colors">
+            Contacto
+          </router-link>
         </div>
       </div>
     </div>
