@@ -20,14 +20,13 @@
       </div>
     </div>
   </div>
-
   <!-- Sección Hero -->
-  <div class="relative bg-gradient-to-r from-indigo-500 to-indigo-600 py-20">
-    <div class="absolute inset-0 opacity-20" style=""></div>
+  <div class="relative py-20" style="background-color: #63d153">
+    <div class="absolute inset-0 opacity-20"></div>
     <div class="container mx-auto px-4 relative z-10">
       <h1 class="text-4xl md:text-5xl font-bold text-white text-center mb-4">Nuestra Historia</h1>
-      <p class="text-xl text-indigo-100 text-center max-w-2xl mx-auto">
-        Creando belleza floral con pasión desde 2015
+      <p class="text-xl text-white text-center max-w-2xl mx-auto">
+        Creando belleza floral con pasión desde 2025
       </p>
     </div>
   </div>
@@ -53,16 +52,16 @@
     </div>
 
     <!-- Nuestros Valores -->
-    <div class="py-16 bg-gray-50 -mx-4 px-4">
+    <div class="py-16 bg-green-50 -mx-4 px-4">
       <div class="max-w-5xl mx-auto">
         <h2 class="text-3xl font-light text-gray-800 mb-12 text-center">Nuestros Valores</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Valor 1 -->
           <div class="bg-white p-8 rounded-lg shadow-sm text-center">
-            <div class="inline-block p-4 bg-indigo-50 rounded-full mb-4">
+            <div class="inline-block p-4 bg-green-100 rounded-full mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-8 w-8 text-indigo-600"
+                class="h-8 w-8 text-green-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -83,10 +82,10 @@
 
           <!-- Valor 2 -->
           <div class="bg-white p-8 rounded-lg shadow-sm text-center">
-            <div class="inline-block p-4 bg-indigo-50 rounded-full mb-4">
+            <div class="inline-block p-4 bg-green-100 rounded-full mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-8 w-8 text-indigo-600"
+                class="h-8 w-8 text-green-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -107,10 +106,10 @@
 
           <!-- Valor 3 -->
           <div class="bg-white p-8 rounded-lg shadow-sm text-center">
-            <div class="inline-block p-4 bg-indigo-50 rounded-full mb-4">
+            <div class="inline-block p-4 bg-green-100 rounded-full mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-8 w-8 text-indigo-600"
+                class="h-8 w-8 text-green-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -134,16 +133,16 @@
 
     <!-- Contacto CTA -->
     <div
-      class="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl p-8 mt-16 max-w-4xl mx-auto shadow-lg"
+      class="bg-gradient-to-r from-green-400 to-green-500 rounded-xl p-8 mt-16 max-w-4xl mx-auto shadow-lg"
     >
       <div class="text-center">
         <h2 class="text-2xl font-bold text-white mb-4">¿Tienes alguna consulta?</h2>
-        <p class="text-indigo-100 mb-6">
+        <p class="text-green-100 mb-6">
           Estamos aquí para ayudarte. Contáctanos y responderemos a todas tus preguntas.
         </p>
         <router-link
           to="/contacto"
-          class="inline-block px-6 py-3 bg-white text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors shadow-md"
+          class="inline-block px-6 py-3 bg-white text-green-600 font-medium rounded-lg hover:bg-green-50 transition-colors shadow-md"
         >
           Contactar ahora
         </router-link>
@@ -159,6 +158,4 @@ import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 </script>
 
-<style scoped>
-/* Puedes agregar estilos adicionales específicos aquí si es necesario */
-</style>
+<style scoped></style>
