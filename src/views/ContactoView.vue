@@ -246,6 +246,35 @@
                   </p>
                 </div>
 
+                <div class="mt-4">
+                  <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                      <input
+                        id="aceptarCondiciones"
+                        v-model="formulario.aceptarCondiciones"
+                        type="checkbox"
+                        class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        :class="{ 'border-red-500': errores.aceptarCondiciones }"
+                      />
+                    </div>
+                    <div class="ml-3 text-sm">
+                      <label for="aceptarCondiciones" class="text-gray-600">
+                        Acepto la
+                        <router-link to="/privacy-policy" class="text-indigo-600 hover:underline"
+                          >política de privacidad</router-link
+                        >
+                        y el
+                        <router-link to="/aviso-legal" class="text-indigo-600 hover:underline"
+                          >tratamiento de mis datos personales</router-link
+                        >.
+                      </label>
+                      <p v-if="errores.aceptarCondiciones" class="text-red-500 text-xs mt-1">
+                        {{ errores.aceptarCondiciones[0] }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="pt-2">
                   <button
                     type="submit"
@@ -297,6 +326,7 @@ const formulario = ref({
   email: '',
   asunto: '',
   mensaje: '',
+  aceptarCondiciones: false,
 })
 
 const errores = ref({})
@@ -305,6 +335,13 @@ const mensajeEnviado = ref(false)
 
 const enviarContacto = async () => {
   errores.value = {}
+
+  // Validación manual para el checkbox
+  if (!formulario.value.aceptarCondiciones) {
+    errores.value.aceptarCondiciones = ['Debes aceptar la política de privacidad para continuar.']
+    return
+  }
+
   enviando.value = true
 
   try {
@@ -316,6 +353,7 @@ const enviarContacto = async () => {
       email: '',
       asunto: '',
       mensaje: '',
+      aceptarCondiciones: false,
     }
 
     mensajeEnviado.value = true

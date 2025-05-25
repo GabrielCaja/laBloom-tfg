@@ -68,6 +68,26 @@ const router = createRouter({
       name: 'ArticuloInfo',
       component: () => import('../views/ArticulosInfo.vue'),
     },
+    {
+      path: '/privacy-policy',
+      name: 'PrivacyPolicy',
+      component: () => import('../views/PrivacyPolicy.vue'),
+    },
+    {
+      path: '/condiciones-de-uso',
+      name: 'CondicionesDeUso',
+      component: () => import('../views/CondicionesDeUso.vue'),
+    },
+    {
+      path: '/aviso-legal',
+      name: 'AvisoLegal',
+      component: () => import('../views/AvisoLegal.vue'),
+    },
+    {
+      path: '/condiciones-venta',
+      name: 'CondicionesDeVenta',
+      component: () => import('../views/CondicionVenta.vue'),
+    },
   ],
 })
 
