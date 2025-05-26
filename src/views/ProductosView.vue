@@ -1,89 +1,82 @@
 <template>
   <Navbar @search-productos="buscarProductos" />
+
   <!-- Breadcrumbs -->
-  <div class="bg-gray-100 py-2">
+  <div class="bg-gray-50 py-3 border-b">
     <div class="container mx-auto px-4">
       <div class="flex items-center text-sm text-gray-600">
-        <router-link to="/" class="hover:text-indigo-600">Inicio</router-link>
-        <span class="mx-2">/</span>
+        <router-link to="/" class="hover:text-indigo-600 transition-colors">Inicio</router-link>
+        <span class="mx-2 text-gray-400">/</span>
         <span class="font-medium text-gray-800">Catálogo de Productos</span>
       </div>
     </div>
   </div>
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-semibold mb-6 text-gray-800">Catálogo de Productos</h1>
 
-    <!-- Filtros y opciones de ordenación -->
-    <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-      <div class="flex flex-col md:flex-row gap-4">
-        <!-- Filtro de categoría -->
-        <div class="w-full md:w-auto flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
-          <select
-            v-model="categoriaSeleccionada"
-            @change="aplicarFiltros"
-            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="">Todas las categorías</option>
-            <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
-              {{ categoria.nombre }}
-            </option>
-          </select>
-        </div>
+  <div class="container mx-auto px-4 py-6 lg:py-8">
+    <!-- Header mejorado -->
+    <div class="mb-8">
+      <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-gray-900">
+        Catálogo de Productos
+      </h1>
+      <p class="text-gray-600 text-sm md:text-base">
+        Descubre nuestra selección de productos únicos
+      </p>
+    </div>
 
-        <div class="w-full md:w-auto flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Ordenar por</label>
-          <select
-            v-model="ordenarPor"
-            @change="aplicarFiltros"
-            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="nombre_asc">Nombre: A-Z</option>
-            <option value="nombre_desc">Nombre: Z-A</option>
-            <option value="precio_asc">Precio: menor a mayor</option>
-            <option value="precio_desc">Precio: mayor a menor</option>
-            <option value="mas_recientes">Más recientes</option>
-          </select>
-        </div>
-
-        <div class="w-full md:w-auto flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
-            Precio máximo: {{ precioMaximo }}€
-          </label>
-          <input
-            v-model="precioMaximo"
-            @change="aplicarFiltros"
-            type="range"
-            min="0"
-            max="100"
-            step="5"
-            class="w-full accent-indigo-600"
-          />
-          <div class="flex justify-between text-xs text-gray-500 mt-1">
-            <span>0€</span>
-            <span>50</span>
-            <span>100€</span>
+    <!-- Filtros mejorados y más responsive -->
+    <div class="bg-white rounded-xl shadow-sm border p-4 md:p-6 mb-6 md:mb-8">
+      <!-- Filtros principales en móvil -->
+      <div class="flex flex-col space-y-4">
+        <!-- Primera fila: Categoría y Ordenar (móvil: stack vertical) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Filtro de categoría -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Categoría</label>
+            <select
+              v-model="categoriaSeleccionada"
+              @change="aplicarFiltros"
+              class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm"
+            >
+              <option value="">Todas las categorías</option>
+              <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                {{ categoria.nombre }}
+              </option>
+            </select>
           </div>
-        </div>
 
-        <!-- Selector de modo de visualizacion -->
-        <div class="w-full md:w-auto flex items-end">
-          <div class="flex flex-col">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Visualización</label>
+          <!-- Ordenar por -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Ordenar por</label>
+            <select
+              v-model="ordenarPor"
+              @change="aplicarFiltros"
+              class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm"
+            >
+              <option value="nombre_asc">Nombre: A-Z</option>
+              <option value="nombre_desc">Nombre: Z-A</option>
+              <option value="precio_asc">Precio: menor a mayor</option>
+              <option value="precio_desc">Precio: mayor a menor</option>
+              <option value="mas_recientes">Más recientes</option>
+            </select>
+          </div>
+
+          <!-- Modo visualización (solo desktop en esta posición) -->
+          <div class="hidden lg:flex flex-col space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Visualización</label>
             <div class="flex space-x-2">
               <button
                 @click="modoVisualizacion = 'grid'"
                 :class="[
-                  'p-2 rounded-md focus:outline-none transition-colors',
+                  'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border',
                   modoVisualizacion === 'grid'
-                    ? 'bg-indigo-100 text-indigo-600'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200',
+                    ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
                 ]"
                 title="Vista en cuadrícula"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
+                  class="h-5 w-5 mx-auto"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -99,16 +92,16 @@
               <button
                 @click="modoVisualizacion = 'list'"
                 :class="[
-                  'p-2 rounded-md focus:outline-none transition-colors',
+                  'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border',
                   modoVisualizacion === 'list'
-                    ? 'bg-indigo-100 text-indigo-600'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200',
+                    ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
                 ]"
                 title="Vista en lista"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
+                  class="h-5 w-5 mx-auto"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -124,46 +117,174 @@
             </div>
           </div>
         </div>
+
+        <!-- Segunda fila: Precio y controles adicionales -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+          <!-- Filtro de precio mejorado -->
+          <div class="space-y-3">
+            <label class="block text-sm font-medium text-gray-700">
+              Precio máximo: <span class="font-bold text-indigo-600">{{ precioMaximo }}€</span>
+            </label>
+            <input
+              v-model="precioMaximo"
+              @input="aplicarFiltros"
+              type="range"
+              min="0"
+              max="100"
+              step="5"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            />
+            <div class="flex justify-between text-xs text-gray-500">
+              <span>0€</span>
+              <span>25€</span>
+              <span>50€</span>
+              <span>75€</span>
+              <span>100€</span>
+            </div>
+          </div>
+
+          <!-- Controles adicionales -->
+          <div class="flex flex-col justify-end space-y-3">
+            <!-- Modo visualización móvil -->
+            <div class="lg:hidden">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Visualización</label>
+              <div class="flex space-x-2">
+                <button
+                  @click="modoVisualizacion = 'grid'"
+                  :class="[
+                    'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border text-sm',
+                    modoVisualizacion === 'grid'
+                      ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
+                  ]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mx-auto"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="modoVisualizacion = 'list'"
+                  :class="[
+                    'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border text-sm',
+                    modoVisualizacion === 'list'
+                      ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
+                  ]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mx-auto"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Botón reiniciar filtros -->
+            <button
+              @click="reiniciarFiltros"
+              class="w-full md:w-auto px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors border border-gray-300"
+            >
+              Reiniciar filtros
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Estado de carga -->
-    <div v-if="cargando" class="flex flex-col items-center justify-center py-16">
-      <div
-        class="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4"
-      ></div>
-      <p class="text-xl text-gray-600">Cargando productos...</p>
+    <!-- Estado de carga mejorado -->
+    <div v-if="cargando" class="flex flex-col items-center justify-center py-16 md:py-24">
+      <div class="relative">
+        <div
+          class="w-16 h-16 md:w-20 md:h-20 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"
+        ></div>
+        <div
+          class="absolute inset-0 w-16 h-16 md:w-20 md:h-20 border-4 border-transparent border-r-indigo-400 rounded-full animate-spin animation-delay-150"
+        ></div>
+      </div>
+      <p class="text-lg md:text-xl text-gray-600 mt-6 font-medium">Cargando productos...</p>
+      <p class="text-sm text-gray-500 mt-2">Esto no debería tardar mucho</p>
     </div>
 
-    <!-- Mensaje de error -->
-    <div v-else-if="error" class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg my-8">
-      <div class="flex">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 text-red-500 mr-3"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-          />
-        </svg>
-        <p class="text-red-800">{{ error }}</p>
+    <!-- Mensaje de error mejorado -->
+    <div v-else-if="error" class="bg-red-50 border border-red-200 rounded-xl p-6 my-8">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-red-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">Error al cargar productos</h3>
+          <p class="text-sm text-red-700 mt-1">{{ error }}</p>
+          <button
+            @click="cargarProductos"
+            class="mt-3 text-sm bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded-md transition-colors"
+          >
+            Intentar de nuevo
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Grid de productos -->
+    <!-- Resultados -->
     <div v-else-if="productosFiltrados.length > 0" class="mb-8">
-      <p class="text-gray-600 mb-4">{{ productosFiltrados.length }} productos encontrados</p>
+      <!-- Header de resultados mejorado -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-sm text-gray-600">
+            <span class="font-semibold text-gray-900">{{ productosFiltrados.length }}</span>
+            producto{{ productosFiltrados.length !== 1 ? 's' : '' }} encontrado{{
+              productosFiltrados.length !== 1 ? 's' : ''
+            }}
+          </span>
+          <div v-if="terminoBusqueda || categoriaSeleccionada" class="flex items-center space-x-1">
+            <span class="text-gray-400">•</span>
+            <button
+              @click="reiniciarFiltros"
+              class="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <!-- Vista en cuadrícula -->
+      <!-- Vista en cuadrícula mejorada -->
       <div
         v-if="modoVisualizacion === 'grid'"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
       >
         <Card
           v-for="producto in productosFiltrados"
@@ -176,102 +297,132 @@
           :stock="producto.stock"
           :visible="producto.visible"
           @agregar-al-carrito="handleAgregarAlCarrito"
+          class="transform transition-all duration-300 hover:scale-105"
         />
       </div>
 
-      <!-- Vista en lista -->
+      <!-- Vista en lista mejorada y más responsive -->
       <div v-else class="space-y-4">
         <div
           v-for="producto in productosFiltrados"
           :key="producto.id"
-          class="bg-white rounded-lg shadow-sm p-4 flex flex-col md:flex-row gap-4 transition-all hover:shadow-md hover:transform hover:-translate-y-1"
+          class="bg-white rounded-xl shadow-sm border hover:shadow-md p-4 md:p-6 transition-all duration-300 hover:border-indigo-200"
         >
-          <div
-            class="md:w-48 h-48 flex-shrink-0 cursor-pointer"
-            @click="router.push('/producto/' + producto.id)"
-          >
-            <img
-              :src="producto.rutaImg || 'https://via.placeholder.com/300'"
-              :alt="producto.nombre"
-              class="w-full h-full object-cover rounded-md"
-            />
-          </div>
-          <div class="flex-1 flex flex-col">
-            <h3 class="text-xl font-medium text-gray-800">{{ producto.nombre }}</h3>
-
-            <!-- Indicador de disponibilidad -->
-            <div class="my-1">
-              <div v-if="!producto.visible" class="flex items-center text-sm text-red-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 mr-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-                <span>Producto no disponible</span>
-              </div>
-              <div v-else-if="producto.stock > 0" class="flex items-center text-sm text-green-600">
-                <span :class="{ 'text-red-600 font-medium': producto.stock <= 10 }">
-                  {{
-                    producto.stock > 10
-                      ? 'Disponible en stock'
-                      : `¡Solo quedan ${producto.stock} unidades!`
-                  }}
-                </span>
-              </div>
-              <div v-else class="flex items-center text-sm text-orange-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4 mr-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>Agotado temporalmente</span>
-              </div>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <!-- Imagen del producto -->
+            <div
+              class="w-full sm:w-32 md:w-48 h-48 sm:h-32 md:h-48 flex-shrink-0 cursor-pointer group"
+              @click="router.push('/producto/' + producto.id)"
+            >
+              <img
+                :src="producto.rutaImg || 'https://via.placeholder.com/300'"
+                :alt="producto.nombre"
+                class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
 
-            <p class="text-gray-600 my-2 line-clamp-3">{{ producto.descripcion }}</p>
-            <div class="mt-auto flex flex-wrap items-center justify-between gap-4">
-              <span class="text-xl font-bold text-indigo-600"
-                >{{ producto.precio.toFixed(2) }}€</span
-              >
-              <div class="flex gap-2">
-                <router-link
-                  :to="'/producto/' + producto.id"
-                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors"
+            <!-- Contenido del producto -->
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <h3
+                  class="text-lg md:text-xl font-semibold text-gray-900 mb-2 cursor-pointer hover:text-indigo-600 transition-colors"
+                  @click="router.push('/producto/' + producto.id)"
                 >
-                  Ver detalles
-                </router-link>
-                <button
-                  @click="handleAgregarAlCarrito(producto.id)"
-                  :disabled="!producto.visible || producto.stock <= 0"
-                  :class="[
-                    'px-4 py-2 rounded-md transition-colors',
-                    !producto.visible || producto.stock <= 0
-                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                      : 'bg-green-600 hover:bg-green-700 text-white',
-                  ]"
-                >
-                  {{
-                    !producto.visible || producto.stock <= 0 ? 'No disponible' : 'Añadir al carrito'
-                  }}
-                </button>
+                  {{ producto.nombre }}
+                </h3>
+
+                <!-- Indicador de disponibilidad mejorado -->
+                <div class="mb-3">
+                  <div
+                    v-if="!producto.visible"
+                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-3 w-3 mr-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    No disponible
+                  </div>
+                  <div
+                    v-else-if="producto.stock > 10"
+                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                  >
+                    <div class="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                    En stock
+                  </div>
+                  <div
+                    v-else-if="producto.stock > 0"
+                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+                  >
+                    <div class="w-2 h-2 bg-yellow-500 rounded-full mr-1"></div>
+                    Solo {{ producto.stock }} unidades
+                  </div>
+                  <div
+                    v-else
+                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-3 w-3 mr-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    Agotado
+                  </div>
+                </div>
+
+                <p class="text-gray-600 text-sm md:text-base mb-4 line-clamp-2 md:line-clamp-3">
+                  {{ producto.descripcion }}
+                </p>
+              </div>
+
+              <!-- Precio y acciones -->
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <span class="text-2xl md:text-3xl font-bold text-indigo-600">
+                  {{ producto.precio.toFixed(2) }}€
+                </span>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <router-link
+                    :to="'/producto/' + producto.id"
+                    class="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg transition-colors text-center text-sm font-medium"
+                  >
+                    Ver detalles
+                  </router-link>
+                  <button
+                    @click="handleAgregarAlCarrito(producto.id)"
+                    :disabled="!producto.visible || producto.stock <= 0"
+                    :class="[
+                      'flex-1 sm:flex-none px-4 py-2.5 rounded-lg transition-colors text-sm font-medium',
+                      !producto.visible || producto.stock <= 0
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'bg-green-600 hover:bg-green-700 text-white',
+                    ]"
+                  >
+                    {{
+                      !producto.visible || producto.stock <= 0
+                        ? 'No disponible'
+                        : 'Añadir al carrito'
+                    }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -279,32 +430,43 @@
       </div>
     </div>
 
-    <!-- Sin resultados -->
-    <div v-else class="text-center py-16 bg-gray-50 rounded-lg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-16 w-16 mx-auto text-gray-400 mb-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <h3 class="text-xl font-medium text-gray-700 mb-2">No se encontraron productos</h3>
-      <p class="text-gray-500 mb-6">Prueba con otros filtros</p>
-      <button
-        @click="reiniciarFiltros"
-        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors"
-      >
-        Mostrar todos los productos
-      </button>
+    <!-- Sin resultados mejorado -->
+    <div v-else class="text-center py-16 md:py-24">
+      <div class="max-w-md mx-auto">
+        <div
+          class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-12 w-12 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl md:text-2xl font-semibold text-gray-900 mb-3">
+          No se encontraron productos
+        </h3>
+        <p class="text-gray-600 mb-8 text-sm md:text-base">
+          Intenta ajustar tus filtros o busca términos diferentes
+        </p>
+        <button
+          @click="reiniciarFiltros"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-colors font-medium"
+        >
+          Mostrar todos los productos
+        </button>
+      </div>
     </div>
   </div>
+
   <Footer />
 </template>
 

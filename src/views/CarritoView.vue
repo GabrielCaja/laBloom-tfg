@@ -96,16 +96,72 @@
         <!-- Resumen del carrito -->
         <div class="mt-8 bg-gray-50 p-6 rounded-lg border border-gray-100">
           <h2 class="text-xl font-medium text-gray-800 mb-4">Resumen de tu pedido</h2>
+
+          <!-- Información de envío gratuito -->
+          <div
+            v-if="subtotal < 20 && subtotal > 0"
+            class="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200"
+          >
+            <div class="flex items-center">
+              <svg
+                class="w-5 h-5 text-blue-600 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span class="text-sm text-blue-800">
+                ¡Añade {{ formatPrice(20 - subtotal) }}€ más para obtener envío gratis!
+              </span>
+            </div>
+          </div>
+
+          <div
+            v-else-if="subtotal >= 20"
+            class="mb-4 p-3 bg-green-50 rounded-lg border border-green-200"
+          >
+            <div class="flex items-center">
+              <svg
+                class="w-5 h-5 text-green-600 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span class="text-sm text-green-800 font-medium"> Tu envío es gratis! </span>
+            </div>
+          </div>
+
           <div class="space-y-2">
             <div class="flex justify-between">
               <span>Subtotal</span>
               <span>{{ formatPrice(subtotal) }}€</span>
             </div>
             <div class="flex justify-between">
+              <span>Envío</span>
+              <span :class="envioGratuito ? 'text-green-600 font-medium' : ''">
+                {{ envioGratuito ? 'Gratis' : formatPrice(costoEnvio) + '€' }}
+              </span>
+            </div>
+            <div class="flex justify-between">
               <span>IVA (21%)</span>
               <span>{{ formatPrice(iva) }}€</span>
             </div>
-            <div class="border-t border-gray-200 mt-2 pt-2 flex justify-between font-semibold">
+            <div
+              class="border-t border-gray-200 mt-2 pt-2 flex justify-between font-semibold text-lg"
+            >
               <span>Total</span>
               <span>{{ formatPrice(total) }}€</span>
             </div>
@@ -157,6 +213,10 @@ const direccionEnvio = ref('')
 const procesandoPedido = ref(false)
 const userId = ref(1)
 
+// Configuración de envío
+const costoEnvio = 4.99
+const minimoEnvioGratuito = 20
+
 //Obtener el carrito desde la API
 const cargarCarrito = async () => {
   try {
@@ -185,6 +245,7 @@ const cargarCarrito = async () => {
     loading.value = false
   }
 }
+
 const procederAlPago = () => {
   //Verificar si el usuario ha iniciado sesión
   const token = localStorage.getItem('access_token')
@@ -195,6 +256,7 @@ const procederAlPago = () => {
   }
   router.push('/pagos')
 }
+
 //Funciones para manipular cantidades
 const incrementarCantidad = async (index) => {
   try {
@@ -234,17 +296,25 @@ const eliminarProducto = async (idProductoCarrito) => {
   }
 }
 
-//Calculos para el resumen
+//Cálculos para el resumen con lógica de envío
 const subtotal = computed(() => {
   return items.value.reduce((total, item) => total + item.precio * item.cantidad, 0)
 })
 
+const envioGratuito = computed(() => {
+  return subtotal.value >= minimoEnvioGratuito
+})
+
+const costoEnvioFinal = computed(() => {
+  return envioGratuito.value ? 0 : costoEnvio
+})
+
 const iva = computed(() => {
-  return subtotal.value * 0.21
+  return (subtotal.value + costoEnvioFinal.value) * 0.21
 })
 
 const total = computed(() => {
-  return subtotal.value + iva.value
+  return subtotal.value + costoEnvioFinal.value + iva.value
 })
 
 const formatPrice = (price) => {
