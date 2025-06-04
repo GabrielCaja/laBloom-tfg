@@ -62,7 +62,9 @@ const router = createRouter({
       path: '/pagos',
       name: 'pagos',
       component: () => import('../views/PagosView.vue'),
+      meta: { requiresAuth: true },
     },
+
     {
       path: '/blog/:id',
       name: 'ArticuloInfo',
