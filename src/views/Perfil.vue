@@ -142,44 +142,10 @@
                       />
                     </div>
                   </div>
-
-                  <!-- ID de usuario (solo lectura) -->
-                  <div class="relative">
-                    <label class="block text-sm font-medium text-gray-700 mb-2" for="id">
-                      ID de usuario
-                    </label>
-                    <div class="relative">
-                      <div
-                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                      >
-                        <svg
-                          class="h-5 w-5 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                          />
-                        </svg>
-                      </div>
-                      <input
-                        id="id"
-                        :value="usuario.id"
-                        type="text"
-                        readonly
-                        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm bg-gray-50 text-gray-500 cursor-not-allowed"
-                        placeholder="ID automático"
-                      />
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Email -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
                   <div class="relative">
                     <label class="block text-sm font-medium text-gray-700 mb-2" for="email">
                       Correo electrónico
@@ -498,7 +464,6 @@
                             <p class="font-medium text-gray-900">
                               {{ formatPrice(item.precio * item.cantidad) }}€
                             </p>
-                            <p class="text-sm text-gray-500">{{ formatPrice(item.precio) }}€ c/u</p>
                           </div>
                         </div>
                       </div>
@@ -510,26 +475,6 @@
                       </div>
 
                       <!-- Desglose de precios -->
-                      <div class="mt-4 pt-4 border-t border-gray-200">
-                        <div class="space-y-1 text-sm">
-                          <div class="flex justify-between">
-                            <span>Subtotal</span>
-                            <span>{{ formatPrice(pedido.subtotal) }}€</span>
-                          </div>
-                          <div class="flex justify-between">
-                            <span>Envío</span>
-                            <span>{{ formatPrice(pedido.costo_envio || 0) }}€</span>
-                          </div>
-                          <div class="flex justify-between">
-                            <span>IVA (21%)</span>
-                            <span>{{ formatPrice(pedido.iva || 0) }}€</span>
-                          </div>
-                          <div class="flex justify-between font-semibold text-base pt-1 border-t">
-                            <span>Total</span>
-                            <span>{{ formatPrice(pedido.total) }}€</span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -641,7 +586,7 @@ const actualizarPerfil = async () => {
   }
 }
 
-// Nuevas funciones para pedidos
+// Pedidos
 const cargarPedidos = async () => {
   try {
     cargandoPedidos.value = true
@@ -686,6 +631,7 @@ const obtenerClaseEstado = (estado) => {
     procesando: 'bg-blue-100 text-blue-800',
     enviado: 'bg-indigo-100 text-indigo-800',
     entregado: 'bg-green-100 text-green-800',
+    completado: 'bg-green-100 text-green-800',
     cancelado: 'bg-red-100 text-red-800',
   }
   return clases[estado] || 'bg-gray-100 text-gray-800'
@@ -697,6 +643,7 @@ const obtenerTextoEstado = (estado) => {
     procesando: 'Procesando',
     enviado: 'Enviado',
     entregado: 'Entregado',
+    completado: 'Completado',
     cancelado: 'Cancelado',
   }
   return textos[estado] || 'Desconocido'
