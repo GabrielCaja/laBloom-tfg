@@ -71,7 +71,7 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-1">{{ producto.nombre }}</h1>
             <div class="flex items-center gap-2 mb-4"></div>
             <div class="text-3xl font-bold text-indigo-600 mb-4">
-              {{ producto.precio.toFixed(2) }}€
+              {{ formatPrice(producto.precio) }}
             </div>
           </div>
 
@@ -250,6 +250,9 @@ import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
 import Card from '@/components/Card.vue'
 import CarritoService from '@/services/CarritoService'
+import { useCurrency } from '@/composables/useCurrency'
+
+const { formatPrice } = useCurrency()
 
 const route = useRoute()
 const router = useRouter()
