@@ -93,6 +93,46 @@
               />
             </svg>
           </router-link>
+          <!-- Selector de moneda  -->
+          <div class="relative group">
+            <button
+              class="flex items-center space-x-1 px-2 py-1 rounded-md hover:bg-gray-50 transition-colors duration-200"
+            >
+              <span class="text-sm font-medium text-gray-700">{{ getCurrencySymbol }}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3 w-3 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown -->
+            <div
+              class="absolute right-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+            >
+              <div class="py-1">
+                <button
+                  v-for="(currency, code) in currenciesWithFlags"
+                  :key="code"
+                  @click="setCurrency(code)"
+                  class="w-full flex items-center px-3 py-2 text-sm hover:bg-gray-50 transition-colors"
+                  :class="{ 'bg-blue-50 text-blue-600': currentCurrency === code }"
+                >
+                  <span class="mr-2">{{ currency.flag }}</span>
+                  <span class="font-medium">{{ currency.symbol }} {{ code }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
           <div
             v-if="logeado"
             class="cursor-pointer hover:text-red-600 text-red-500"
@@ -119,17 +159,23 @@
   </nav>
 </template>
 
-<script lang="ts" setup>
+<script lang="js" setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useCurrency } from '@/composables/useCurrency'
 
 const router = useRouter()
 const route = useRoute()
 const logeado = ref(false)
 const searchQuery = ref('')
+const { currentCurrency, currencies, setCurrency, getCurrencySymbol } = useCurrency()
 
 const emit = defineEmits(['search-productos'])
-
+const currenciesWithFlags = {
+  EUR: { symbol: '€', rate: 1, name: 'Euro', flag: '🇪🇺' },
+  USD: { symbol: '$', rate: 1.09, name: 'US Dollar', flag: '🇺🇸' },
+  GBP: { symbol: '£', rate: 0.87, name: 'British Pound', flag: '🇬🇧' },
+}
 //Propiedad para determinar si se debe mostrar la barra de búsqueda
 const mostrarBusqueda = computed(() => {
   return route.name === 'productos' || route.path === '/productos'

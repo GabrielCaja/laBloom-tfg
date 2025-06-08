@@ -48,7 +48,7 @@
             <img :src="item.imagen" :alt="item.nombre" class="w-24 h-24 object-cover rounded-md" />
             <div class="flex-grow ml-0 sm:ml-6 mt-4 sm:mt-0 text-center sm:text-left">
               <h3 class="font-medium text-gray-800 text-lg">{{ item.nombre }}</h3>
-              <p class="text-gray-600">{{ formatPrice(item.precio) }}€</p>
+              <p class="text-gray-600">{{ formatPrice(item.precio) }}</p>
             </div>
             <div class="flex items-center space-x-2 mt-4 sm:mt-0">
               <button
@@ -67,7 +67,7 @@
             </div>
             <div class="ml-4 mt-4 sm:mt-0">
               <p class="font-semibold text-gray-800">
-                {{ formatPrice(item.precio * item.cantidad) }}€
+                {{ formatPrice(item.precio * item.cantidad) }}
               </p>
             </div>
             <button
@@ -117,7 +117,7 @@
                 ></path>
               </svg>
               <span class="text-sm text-blue-800">
-                ¡Añade {{ formatPrice(20 - subtotal) }}€ más para obtener envío gratis!
+                ¡Añade {{ formatPrice(20 - subtotal) }} más para obtener envío gratis!
               </span>
             </div>
           </div>
@@ -147,23 +147,23 @@
           <div class="space-y-2">
             <div class="flex justify-between">
               <span>Subtotal</span>
-              <span>{{ formatPrice(subtotal) }}€</span>
+              <span>{{ formatPrice(subtotal) }}</span>
             </div>
             <div class="flex justify-between">
               <span>Envío</span>
               <span :class="envioGratuito ? 'text-green-600 font-medium' : ''">
-                {{ envioGratuito ? 'Gratis' : formatPrice(costoEnvio) + '€' }}
+                {{ envioGratuito ? 'Gratis' : formatPrice(costoEnvio) + '' }}
               </span>
             </div>
             <div class="flex justify-between">
               <span>IVA (21%)</span>
-              <span>{{ formatPrice(iva) }}€</span>
+              <span>{{ formatPrice(iva) }}</span>
             </div>
             <div
               class="border-t border-gray-200 mt-2 pt-2 flex justify-between font-semibold text-lg"
             >
               <span>Total</span>
-              <span>{{ formatPrice(total) }}€</span>
+              <span>{{ formatPrice(total) }}</span>
             </div>
           </div>
 
@@ -194,13 +194,16 @@
   <Footer />
 </template>
 
-<script setup>
+<script setup lang="js">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import CarritoService from '@/services/CarritoService'
 import { useToast } from 'vue-toastification'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import { useCurrency } from '@/composables/useCurrency'
+
+const { formatPrice } = useCurrency()
 
 const router = useRouter()
 const toast = useToast()
@@ -316,10 +319,6 @@ const iva = computed(() => {
 const total = computed(() => {
   return subtotal.value + costoEnvioFinal.value + iva.value
 })
-
-const formatPrice = (price) => {
-  return price.toFixed(2)
-}
 
 //Procesar el pedido
 const procesarPedido = async () => {

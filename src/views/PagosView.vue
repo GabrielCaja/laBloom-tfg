@@ -59,7 +59,7 @@
               <p class="text-sm text-gray-500">Cantidad: {{ producto.cantidad }}</p>
             </div>
             <p class="font-bold">
-              {{ formatPrice((producto.precio_actual || producto.precio) * producto.cantidad) }}€
+              {{ formatPrice((producto.precio_actual || producto.precio) * producto.cantidad) }}
             </p>
           </div>
           <hr />
@@ -73,11 +73,11 @@
           </div>
           <div class="flex justify-between">
             <span>IVA (21%)</span>
-            <span>{{ formatPrice(iva) }}€</span>
+            <span>{{ formatPrice(iva) }}</span>
           </div>
           <div class="flex justify-between text-xl font-bold border-t pt-2">
             <p>Total:</p>
-            <p>{{ formatPrice(total) }}€</p>
+            <p>{{ formatPrice(total) }}</p>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@
           >
             <span v-if="processing">Procesando...</span>
             <span v-else-if="!stripeReady">Preparando pago...</span>
-            <span v-else>Pagar {{ formatPrice(total) }}€</span>
+            <span v-else>Pagar {{ formatPrice(total) }}</span>
           </button>
         </form>
 
@@ -137,6 +137,9 @@ import { useToast } from 'vue-toastification'
 import axios from 'axios'
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import { useCurrency } from '@/composables/useCurrency'
+
+const { formatPrice } = useCurrency()
 
 const router = useRouter()
 const toast = useToast()
@@ -387,9 +390,5 @@ const handleSubmit = async () => {
   } finally {
     processing.value = false
   }
-}
-
-const formatPrice = (price) => {
-  return parseFloat(price || 0).toFixed(2)
 }
 </script>

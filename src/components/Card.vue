@@ -69,7 +69,7 @@
         <div class="pt-3 border-t border-gray-100">
           <div class="flex items-center justify-between mb-3">
             <span class="px-3 py-1 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-              {{ precio }} €
+              {{ formatPrice(precio) }}
             </span>
             <router-link
               :to="`/producto/${id}`"
@@ -115,6 +115,9 @@ import { ref } from 'vue'
 import { defineProps } from 'vue'
 import CarritoService from '@/services/CarritoService'
 import { useToast } from 'vue-toastification'
+import { useCurrency } from '@/composables/useCurrency'
+
+const { formatPrice } = useCurrency()
 
 const toast = useToast()
 const rating = ref(4)
