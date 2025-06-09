@@ -42,13 +42,6 @@
         embellezcan espacios. Buscamos llevar la magia de la naturaleza a tu vida cotidiana, con
         arreglos cuidadosamente diseñados que inspiren y emocionen.
       </p>
-      <div class="flex justify-center">
-        <img
-          src="https://images.unsplash.com/photo-1587729927069-dedd7eb118c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Zmxvd2VyJTIwc2hvcHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
-          alt="Nuestro trabajo"
-          class="rounded-lg shadow-lg w-full max-w-2xl h-80 object-cover"
-        />
-      </div>
     </div>
 
     <!-- Nuestros Valores -->

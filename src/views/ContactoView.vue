@@ -22,7 +22,7 @@
   </div>
 
   <!-- Sección Hero -->
-  <div class="bg-gradient-to-r from-indigo-500 to-purple-600 py-16">
+  <div class="bg-gradient-to-r from-green-500 to-green-600 py-16">
     <div class="container mx-auto px-4 text-center">
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">Contacta con nosotros</h1>
       <p class="text-indigo-100 max-w-xl mx-auto">
@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div class="bg-gray-50 py-16">
+  <div class="bg-green-50 py-16">
     <div class="container mx-auto px-4">
       <div class="max-w-3xl mx-auto">
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -68,14 +68,14 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2">
             <!-- Información de contacto -->
-            <div class="bg-indigo-600 p-8 text-white">
+            <div class="bg-teal-600 p-8 text-white">
               <h2 class="text-2xl font-semibold mb-6">Información de contacto</h2>
 
               <div class="space-y-6">
                 <div class="flex items-start">
                   <div class="flex-shrink-0">
                     <svg
-                      class="h-6 w-6 text-indigo-300"
+                      class="h-6 w-6 text-teal-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -95,15 +95,15 @@
                     </svg>
                   </div>
                   <div class="ml-4">
-                    <p class="text-indigo-100">Calle X</p>
-                    <p class="text-indigo-100">28290, Madrid, España</p>
+                    <p class="text-teal-100">Calle Madrid</p>
+                    <p class="text-teal-100">28290, Madrid, España</p>
                   </div>
                 </div>
 
                 <div class="flex items-start">
                   <div class="flex-shrink-0">
                     <svg
-                      class="h-6 w-6 text-indigo-300"
+                      class="h-6 w-6 text-teal-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -117,14 +117,14 @@
                     </svg>
                   </div>
                   <div class="ml-4">
-                    <p class="text-indigo-100">info@labloom.com</p>
+                    <p class="text-teal-100">info@labloom.com</p>
                   </div>
                 </div>
 
                 <div class="flex items-start">
                   <div class="flex-shrink-0">
                     <svg
-                      class="h-6 w-6 text-indigo-300"
+                      class="h-6 w-6 text-teal-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -138,15 +138,15 @@
                     </svg>
                   </div>
                   <div class="ml-4">
-                    <p class="text-indigo-100">+34 900 123 456</p>
+                    <p class="text-teal-100">+34 623 232 32</p>
                   </div>
                 </div>
               </div>
 
               <div class="mt-12">
-                <h3 class="text-lg font-medium text-indigo-100 mb-4">Síguenos en redes</h3>
+                <h3 class="text-lg font-medium text-teal-100 mb-4">Síguenos en redes</h3>
                 <div class="flex space-x-4">
-                  <a href="#" class="text-indigo-200 hover:text-white transition-colors">
+                  <a href="#" class="text-teal-200 hover:text-white transition-colors">
                     <span class="sr-only">Instagram</span>
                     <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path
@@ -156,7 +156,7 @@
                       />
                     </svg>
                   </a>
-                  <a href="#" class="text-indigo-200 hover:text-white transition-colors">
+                  <a href="#" class="text-teal-200 hover:text-white transition-colors">
                     <span class="sr-only">Twitter</span>
                     <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path
@@ -164,7 +164,7 @@
                       />
                     </svg>
                   </a>
-                  <a href="#" class="text-indigo-200 hover:text-white transition-colors">
+                  <a href="#" class="text-teal-200 hover:text-white transition-colors">
                     <span class="sr-only">Facebook</span>
                     <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path
@@ -190,7 +190,7 @@
                     id="nombre"
                     v-model="formulario.nombre"
                     type="text"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                     :class="{ 'border-red-500 focus:ring-red-500': errores.nombre }"
                   />
                   <p v-if="errores.nombre" class="text-red-500 text-xs mt-1">
@@ -206,7 +206,7 @@
                     id="email"
                     v-model="formulario.email"
                     type="email"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                     :class="{ 'border-red-500 focus:ring-red-500': errores.email }"
                   />
                   <p v-if="errores.email" class="text-red-500 text-xs mt-1">
@@ -222,7 +222,7 @@
                     id="asunto"
                     v-model="formulario.asunto"
                     type="text"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                     :class="{ 'border-red-500 focus:ring-red-500': errores.asunto }"
                   />
                   <p v-if="errores.asunto" class="text-red-500 text-xs mt-1">
@@ -238,7 +238,7 @@
                     id="mensaje"
                     v-model="formulario.mensaje"
                     rows="5"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                     :class="{ 'border-red-500 focus:ring-red-500': errores.mensaje }"
                   ></textarea>
                   <p v-if="errores.mensaje" class="text-red-500 text-xs mt-1">
@@ -253,18 +253,18 @@
                         id="aceptarCondiciones"
                         v-model="formulario.aceptarCondiciones"
                         type="checkbox"
-                        class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        class="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                         :class="{ 'border-red-500': errores.aceptarCondiciones }"
                       />
                     </div>
                     <div class="ml-3 text-sm">
                       <label for="aceptarCondiciones" class="text-gray-600">
                         Acepto la
-                        <router-link to="/privacy-policy" class="text-indigo-600 hover:underline"
+                        <router-link to="/privacy-policy" class="text-teal-600 hover:underline"
                           >política de privacidad</router-link
                         >
                         y el
-                        <router-link to="/aviso-legal" class="text-indigo-600 hover:underline"
+                        <router-link to="/aviso-legal" class="text-teal-600 hover:underline"
                           >tratamiento de mis datos personales</router-link
                         >.
                       </label>
@@ -278,7 +278,7 @@
                 <div class="pt-2">
                   <button
                     type="submit"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex justify-center items-center"
+                    class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex justify-center items-center"
                     :disabled="enviando"
                   >
                     <svg
