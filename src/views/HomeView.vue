@@ -78,7 +78,7 @@
       </div>
     </section>
 
-    <!-- Productos destacados -->
+    <!-- Productos -->
     <section class="container mx-auto px-4 py-16">
       <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-light text-gray-800">Algunos de nuestros productos</h2>
@@ -476,10 +476,10 @@ const cargarCategorias = async () => {
 //Función para obtener una imagen predeterminada según el ID de la categoría
 const obtenerImagenPredeterminada = (id) => {
   const imagenesPredeterminadas = [
-    'https://images.unsplash.com/photo-1567696153798-068c25a13af1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1561181286-d5c73133aeda?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1519095614420-850b5671ac7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1531102703131-0478e728c67c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    '/src/assets/categoria1.jpg',
+    '/src/assets/categoria2.jpg',
+    '/src/assets/categoria3.jpg',
+    '/src/assets/categoria4.jpg',
   ]
   return imagenesPredeterminadas[(id - 1) % imagenesPredeterminadas.length]
 }
