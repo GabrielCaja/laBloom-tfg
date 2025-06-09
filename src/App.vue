@@ -1,17 +1,10 @@
 <template>
-
-<h1>PAGINA EN CONSTRUCCION</h1>
-
+  <div id="app">
+    <router-view />
+    <ChatBot />
+  </div>
 </template>
 
-
-<script lang="ts" setup> 
-
+<script lang="ts" setup>
+import ChatBot from '@/components/ChatBot.vue'
 </script>
-
-
-
-<style scoped>
-
-
-</style>
