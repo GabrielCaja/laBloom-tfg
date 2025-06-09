@@ -81,7 +81,7 @@
     <!-- Productos destacados -->
     <section class="container mx-auto px-4 py-16">
       <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-light text-gray-800">Productos destacados</h2>
+        <h2 class="text-3xl font-light text-gray-800">Algunos de nuestros productos</h2>
         <router-link to="/productos" class="text-green-700 hover:text-green-900 flex items-center">
           Ver todos
           <svg
@@ -111,7 +111,7 @@
         {{ error }}
       </div>
 
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card
           v-for="producto in productosDestacados"
           :key="producto.id"
@@ -120,6 +120,8 @@
           :descripcion="producto.descripcion"
           :precio="producto.precio"
           :imagen="producto.rutaImg"
+          :stock="producto.stock"
+          :visible="producto.visible"
           @agregar-al-carrito="agregarAlCarrito"
         />
       </div>
@@ -221,27 +223,76 @@
         <h2 class="text-3xl font-light text-gray-800 mb-12 text-center">
           Lo que dicen nuestros clientes
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Testimonio 1 -->
-          <div class="bg-white p-6 rounded-lg shadow">
+
+        <!-- Estado de carga -->
+        <div v-if="loadingValoraciones" class="flex justify-center py-12">
+          <div
+            class="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin"
+          ></div>
+        </div>
+
+        <!-- Error -->
+        <div
+          v-else-if="errorValoraciones"
+          class="bg-red-50 p-4 rounded-lg text-red-600 text-center"
+        >
+          {{ errorValoraciones }}
+        </div>
+
+        <!-- Sin valoraciones -->
+        <div v-else-if="valoracionesDestacadas.length === 0" class="text-center py-12">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-16 w-16 mx-auto text-gray-300 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1"
+              d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a3 3 0 01-3-3V8a3 3 0 013-3h8z"
+            />
+          </svg>
+          <p class="text-gray-500">Aún no tenemos valoraciones para mostrar.</p>
+        </div>
+
+        <!-- Lista de valoraciones -->
+        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            v-for="valoracion in valoracionesDestacadas"
+            :key="valoracion.id"
+            class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
+          >
+            <!-- Estrellas -->
             <div class="flex items-center mb-4">
               <div class="flex text-yellow-400">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  v-for="i in 5"
+                  :key="i"
+                  class="w-5 h-5"
+                  :class="i <= valoracion.valoracion ? 'text-yellow-400' : 'text-gray-300'"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                  ></path>
+                  />
                 </svg>
-                <!-- Resto de estrellas -->
               </div>
+              <span class="ml-2 text-sm text-gray-600">{{ valoracion.valoracion }}/5</span>
             </div>
-            <p class="text-gray-600 mb-4">
-              "El ramo que pedí para el cumpleaños de mi madre era precioso. Llegó puntual y las
-              flores estaban perfectas. ¡Muy recomendable!"
-            </p>
-            <div class="font-medium">Ana García</div>
-          </div>
 
-          <!-- Resto de testimonios -->
+            <!-- Comentario -->
+            <p class="text-gray-600 mb-4 line-clamp-4">"{{ valoracion.comentario }}"</p>
+
+            <!-- Producto -->
+            <div class="border-t pt-4">
+              <div class="font-medium text-gray-800"></div>
+              <div class="text-sm text-gray-500">Producto: {{ valoracion.producto.nombre }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -297,26 +348,102 @@ const loadingCategorias = ref(false)
 const errorCategorias = ref(null)
 const loadingArticulos = ref(false)
 const errorArticulos = ref(null)
+const valoracionesDestacadas = ref([])
+const loadingValoraciones = ref(false)
+const errorValoraciones = ref(null)
+// Cargar valoraciones aleatorias
+// Cargar valoraciones aleatorias (sin datos de usuario)
+const cargarValoracionesDestacadas = async () => {
+  try {
+    loadingValoraciones.value = true
+    errorValoraciones.value = null
 
-//Cargar productos destacados
+    // Cargar todas las valoraciones
+    const valoracionesResponse = await axios.get('http://localhost:8000/api/valoraciones')
+
+    // Cargar productos para obtener nombres
+    const productosResponse = await axios.get('http://localhost:8000/api/producto/')
+
+    // Filtrar valoraciones con comentarios y puntuación alta (4-5 estrellas)
+    const valoracionesBuenas = valoracionesResponse.data.filter(
+      (valoracion) => valoracion.comentario && valoracion.valoracion >= 4,
+    )
+
+    if (valoracionesBuenas.length === 0) {
+      valoracionesDestacadas.value = []
+      return
+    }
+
+    // Crear mapa de productos para búsqueda rápida
+    const productosMap = new Map(productosResponse.data.map((p) => [p.id, p]))
+
+    // Procesar valoraciones con información completa
+    const valoracionesCompletas = valoracionesBuenas
+      .map((valoracion) => {
+        const producto = productosMap.get(valoracion.producto_id)
+
+        if (!producto) return null
+
+        return {
+          id: valoracion.id,
+          comentario: valoracion.comentario,
+          valoracion: valoracion.valoracion,
+          fecha: formatearFecha(valoracion.created_at),
+          producto: {
+            id: producto.id,
+            nombre: producto.nombre,
+          },
+          usuario: {
+            nombre: 'Cliente verificado', // Nombre genérico
+          },
+        }
+      })
+      .filter((valoracion) => valoracion !== null)
+
+    // Seleccionar 3 valoraciones aleatorias
+    const valoracionesAleatorias = valoracionesCompletas.sort(() => Math.random() - 0.5).slice(0, 3)
+
+    valoracionesDestacadas.value = valoracionesAleatorias
+  } catch (err) {
+    console.error('Error al cargar valoraciones:', err)
+    errorValoraciones.value = 'No pudimos cargar las valoraciones.'
+  } finally {
+    loadingValoraciones.value = false
+  }
+}
+// Cargar algunos productos (sin filtrar por valoraciones)
 const cargarProductosDestacados = async () => {
   try {
     loading.value = true
     error.value = null
-    const response = await axios.get('http://localhost:8000/api/producto/destacados/')
 
-    productosDestacados.value = response.data.map((producto) => ({
-      id: producto.id,
-      nombre: producto.nombre,
-      descripcion: producto.descripcion,
-      precio: parseFloat(producto.precio),
-      rutaImg: producto.rutaImg,
-      categoria: producto.categoria || 'General',
-    }))
+    // Cargar todos los productos
+    const response = await axios.get('http://localhost:8000/api/producto/')
+
+    // Filtrar productos visibles y tomar 3 aleatorios
+    const productosVisibles = response.data.filter(
+      (producto) => producto.visible === true || producto.visible === 1,
+    )
+
+    // Mezclar array aleatoriamente y tomar los primeros 3
+    const productosAleatorios = productosVisibles
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map((producto) => ({
+        id: producto.id,
+        nombre: producto.nombre,
+        descripcion: producto.descripcion,
+        precio: parseFloat(producto.precio),
+        rutaImg: producto.rutaImg,
+        categoria: producto.categoria || 'General',
+        stock: producto.stock || 0,
+        visible: producto.visible === true || producto.visible === 1,
+      }))
+
+    productosDestacados.value = productosAleatorios
   } catch (err) {
-    console.error('Error al cargar productos destacados:', err)
-    error.value =
-      'No pudimos cargar los productos destacados. Por favor, intenta de nuevo más tarde.'
+    console.error('Error al cargar productos:', err)
+    error.value = 'No pudimos cargar los productos. Por favor, intenta de nuevo más tarde.'
   } finally {
     loading.value = false
   }
@@ -432,9 +559,15 @@ onMounted(() => {
   cargarProductosDestacados()
   cargarCategorias()
   cargarArticulosRecientes()
+  cargarValoracionesDestacadas()
 })
 </script>
 
 <style scoped>
-/* Puedes añadir estilos específicos aquí si los necesitas */
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 </style>

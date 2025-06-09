@@ -136,6 +136,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  valoraciones: {
+    type: Object,
+    default: null,
+  },
 })
 
 const addCart = async () => {
