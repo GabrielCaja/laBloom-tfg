@@ -4,7 +4,7 @@
   <div class="bg-gray-100 py-2">
     <div class="container mx-auto px-4">
       <div class="flex items-center text-sm text-gray-600">
-        <router-link to="/" class="hover:text-indigo-600">Inicio</router-link>
+        <router-link to="/" class="hover:text-green-600">Inicio</router-link>
         <span class="mx-2">/</span>
         <span class="font-medium text-gray-800">Blog</span>
       </div>
@@ -12,7 +12,7 @@
   </div>
   <div class="bg-gray-50 min-h-screen">
     <!-- Cabecera del blog -->
-    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+    <header class="bg-gradient-to-r from-green-700 to-green-800 text-white py-16">
       <div class="container mx-auto px-4">
         <p class="text-xl text-center max-w-2xl mx-auto opacity-90">
           Descubre los últimos artículos, noticias y tendencias
@@ -25,7 +25,7 @@
       <!-- Estado de carga -->
       <div v-if="loading" class="flex flex-col items-center justify-center py-24">
         <div
-          class="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4"
+          class="w-16 h-16 border-4 border-green-600 border-t-transparent rounded-full animate-spin mb-4"
         ></div>
         <p class="text-xl text-gray-600">Cargando artículos...</p>
       </div>
@@ -72,7 +72,7 @@
             <div class="md:w-2/3 p-8">
               <!-- Título del artículo -->
               <h2
-                class="text-3xl font-bold text-gray-800 mb-4 hover:text-indigo-600 transition-colors"
+                class="text-3xl font-bold text-gray-800 mb-4 hover:text-green-600 transition-colors"
               >
                 {{ articulo.titulo }}
               </h2>
@@ -115,7 +115,7 @@
               <!-- Acciones -->
               <div class="flex items-center justify-between mt-6">
                 <button
-                  class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg transition-colors flex items-center font-medium"
+                  class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg transition-colors flex items-center font-medium"
                 >
                   <p class="text-gray-600 mb-4">{{ articulo.resumen }}</p>
                   <router-link :to="`/blog/${articulo.id}`" class="font-medium">

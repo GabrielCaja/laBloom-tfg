@@ -5,7 +5,7 @@
   <div class="bg-gray-50 py-3 border-b">
     <div class="container mx-auto px-4">
       <div class="flex items-center text-sm text-gray-600">
-        <router-link to="/" class="hover:text-indigo-600 transition-colors">Inicio</router-link>
+        <router-link to="/" class="hover:text-green-600 transition-colors">Inicio</router-link>
         <span class="mx-2 text-gray-400">/</span>
         <span class="font-medium text-gray-800">Catálogo de Productos</span>
       </div>
@@ -35,7 +35,7 @@
             <select
               v-model="categoriaSeleccionada"
               @change="aplicarFiltros"
-              class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm"
+              class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-sm"
             >
               <option value="">Todas las categorías</option>
               <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
@@ -50,7 +50,7 @@
             <select
               v-model="ordenarPor"
               @change="aplicarFiltros"
-              class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm"
+              class="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-sm"
             >
               <option value="nombre_asc">Nombre: A-Z</option>
               <option value="nombre_desc">Nombre: Z-A</option>
@@ -69,7 +69,7 @@
                 :class="[
                   'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border',
                   modoVisualizacion === 'grid'
-                    ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                    ? 'bg-green-100 text-green-700 border-green-200'
                     : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
                 ]"
                 title="Vista en cuadrícula"
@@ -94,7 +94,7 @@
                 :class="[
                   'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border',
                   modoVisualizacion === 'list'
-                    ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                    ? 'bg-green-100 text-green-700 border-green-200'
                     : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
                 ]"
                 title="Vista en lista"
@@ -119,11 +119,10 @@
         </div>
 
         <!-- Segunda fila: Precio y controles adicionales -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
-          <!-- Filtro de precio mejorado -->
-          <div class="space-y-3">
-            <label class="block text-sm font-medium text-gray-700">
-              Precio máximo: <span class="font-bold text-indigo-600">{{ precioMaximo }}€</span>
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-4 pt-4 border-t border-gray-200">
+          <div class="space-y-3 flex flex-col items-center">
+            <label class="block text-sm font-medium text-gray-700 text-center">
+              Precio máximo: <span class="font-bold text-green-600">{{ precioMaximo }}€</span>
             </label>
             <input
               v-model="precioMaximo"
@@ -132,9 +131,9 @@
               min="0"
               max="100"
               step="5"
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
             />
-            <div class="flex justify-between text-xs text-gray-500">
+            <div class="flex justify-between text-xs text-gray-500 w-full">
               <span>0€</span>
               <span>25€</span>
               <span>50€</span>
@@ -154,7 +153,7 @@
                   :class="[
                     'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border text-sm',
                     modoVisualizacion === 'grid'
-                      ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                      ? 'bg-green-100 text-green-700 border-green-200'
                       : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
                   ]"
                 >
@@ -178,7 +177,7 @@
                   :class="[
                     'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border text-sm',
                     modoVisualizacion === 'list'
-                      ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                      ? 'bg-green-100 text-green-700 border-green-200'
                       : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
                   ]"
                 >
@@ -199,14 +198,6 @@
                 </button>
               </div>
             </div>
-
-            <!-- Botón reiniciar filtros -->
-            <button
-              @click="reiniciarFiltros"
-              class="w-full md:w-auto px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors border border-gray-300"
-            >
-              Reiniciar filtros
-            </button>
           </div>
         </div>
       </div>
@@ -216,10 +207,10 @@
     <div v-if="cargando" class="flex flex-col items-center justify-center py-16 md:py-24">
       <div class="relative">
         <div
-          class="w-16 h-16 md:w-20 md:h-20 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"
+          class="w-16 h-16 md:w-20 md:h-20 border-4 border-green-200 border-t-green-600 rounded-full animate-spin"
         ></div>
         <div
-          class="absolute inset-0 w-16 h-16 md:w-20 md:h-20 border-4 border-transparent border-r-indigo-400 rounded-full animate-spin animation-delay-150"
+          class="absolute inset-0 w-16 h-16 md:w-20 md:h-20 border-4 border-transparent border-r-green-400 rounded-full animate-spin animation-delay-150"
         ></div>
       </div>
       <p class="text-lg md:text-xl text-gray-600 mt-6 font-medium">Cargando productos...</p>
@@ -273,7 +264,7 @@
             <span class="text-gray-400">•</span>
             <button
               @click="reiniciarFiltros"
-              class="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+              class="text-xs text-green-600 hover:text-green-700 font-medium"
             >
               Limpiar filtros
             </button>
@@ -306,7 +297,7 @@
         <div
           v-for="producto in productosFiltrados"
           :key="producto.id"
-          class="bg-white rounded-xl shadow-sm border hover:shadow-md p-4 md:p-6 transition-all duration-300 hover:border-indigo-200"
+          class="bg-white rounded-xl shadow-sm border hover:shadow-md p-4 md:p-6 transition-all duration-300 hover:border-green-200"
         >
           <div class="flex flex-col sm:flex-row gap-4">
             <!-- Imagen del producto -->
@@ -325,7 +316,7 @@
             <div class="flex-1 flex flex-col justify-between">
               <div>
                 <h3
-                  class="text-lg md:text-xl font-semibold text-gray-900 mb-2 cursor-pointer hover:text-indigo-600 transition-colors"
+                  class="text-lg md:text-xl font-semibold text-gray-900 mb-2 cursor-pointer hover:text-green-600 transition-colors"
                   @click="router.push('/producto/' + producto.id)"
                 >
                   {{ producto.nombre }}
@@ -396,13 +387,13 @@
 
               <!-- Precio y acciones -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <span class="text-2xl md:text-3xl font-bold text-indigo-600">
+                <span class="text-2xl md:text-3xl font-bold text-green-600">
                   {{ producto.precio.toFixed(2) }}€
                 </span>
                 <div class="flex flex-col sm:flex-row gap-2">
                   <router-link
                     :to="'/producto/' + producto.id"
-                    class="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg transition-colors text-center text-sm font-medium"
+                    class="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg transition-colors text-center text-sm font-medium"
                   >
                     Ver detalles
                   </router-link>
@@ -459,7 +450,7 @@
         </p>
         <button
           @click="reiniciarFiltros"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-colors font-medium"
+          class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors font-medium"
         >
           Mostrar todos los productos
         </button>

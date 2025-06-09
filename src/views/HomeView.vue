@@ -144,7 +144,7 @@
             </router-link>
           </div>
           <div class="md:w-1/3">
-            <img src="" alt="Promoción" class="rounded-lg shadow-lg" />
+            <img src="/src/assets/promo.png " class="rounded-lg shadow-lg" />
           </div>
         </div>
       </div>

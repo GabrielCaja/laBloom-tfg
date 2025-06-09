@@ -62,9 +62,9 @@
               <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-400">
                 <div class="space-y-2 text-sm text-gray-700">
                   <div><strong>Denominación social:</strong> LaBloom S.L.</div>
-                  <div><strong>CIF:</strong> B-12345678</div>
-                  <div><strong>Domicilio:</strong> Calle Ejemplo, 123, 28001 Madrid, España</div>
-                  <div><strong>Teléfono:</strong> +34 900 123 456</div>
+                  <div><strong>CIF:</strong> B-12235678</div>
+                  <div><strong>Domicilio:</strong> 28001 Madrid, España</div>
+                  <div><strong>Teléfono:</strong> +34 627418399</div>
                   <div><strong>Email:</strong> info@labloom.com</div>
                   <div>
                     <strong>Registro Mercantil:</strong> Madrid, Tomo 1234, Folio 567, Hoja M-89012

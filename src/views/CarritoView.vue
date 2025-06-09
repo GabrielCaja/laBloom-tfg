@@ -4,7 +4,7 @@
   <div class="bg-gray-100 py-2">
     <div class="container mx-auto px-4">
       <div class="flex items-center text-sm text-gray-600">
-        <router-link to="/" class="hover:text-indigo-600">Inicio</router-link>
+        <router-link to="/" class="hover:text-green-600">Inicio</router-link>
         <span class="mx-2">/</span>
         <span class="font-medium text-gray-800">Carrito</span>
       </div>
@@ -32,7 +32,7 @@
         <p class="text-gray-500 mb-6">Tu carrito está vacío</p>
         <router-link
           to="/productos"
-          class="inline-block px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors transform hover:scale-105 duration-200"
+          class="inline-block px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors transform hover:scale-105 duration-200"
         >
           Seguir comprando
         </router-link>
@@ -167,9 +167,10 @@
             </div>
           </div>
 
+          <!-- Línea 155: Botón "Proceder al pago" -->
           <button
             @click="procederAlPago"
-            class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 transition-colors transform hover:scale-[1.02] duration-200 flex items-center justify-center"
+            class="w-full mt-6 bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition-colors transform hover:scale-[1.02] duration-200 flex items-center justify-center"
           >
             Proceder al pago
             <svg

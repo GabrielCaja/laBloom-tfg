@@ -4,7 +4,7 @@
     <button
       v-if="!chatAbierto"
       @click="abrirChat"
-      class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110"
+      class="bg-green-700 hover:bg-green-800 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -30,13 +30,13 @@
     >
       <!-- Encabezado del chat -->
       <div
-        class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-3 rounded-t-lg flex justify-between items-center"
+        class="bg-gradient-to-r from-green-700 to-green-800 text-white px-4 py-3 rounded-t-lg flex justify-between items-center"
       >
         <div class="flex items-center">
           <div class="bg-white rounded-full p-1 mr-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-indigo-600"
+              class="h-6 w-6 text-green-700"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -51,7 +51,7 @@
           </div>
           <h3 class="font-medium">Asistente LaBloom</h3>
         </div>
-        <button @click="cerrarChat" class="hover:bg-indigo-700 rounded p-1">
+        <button @click="cerrarChat" class="hover:bg-green-800 rounded p-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5"
@@ -76,23 +76,23 @@
             :class="[
               'rounded-lg px-4 py-2 max-w-3/4',
               mensaje.tipo === 'bot'
-                ? 'bg-gray-100 text-gray-800 mr-auto'
-                : 'bg-indigo-600 text-white ml-auto',
+                ? 'bg-green-50 text-green-800 mr-auto border border-green-200'
+                : 'bg-green-700 text-white ml-auto',
             ]"
           >
             {{ mensaje.texto }}
           </div>
         </div>
         <div v-if="esperandoRespuesta" class="flex items-center mb-3">
-          <div class="bg-gray-100 rounded-lg px-4 py-2">
+          <div class="bg-green-50 border border-green-200 rounded-lg px-4 py-2">
             <div class="flex space-x-1">
-              <div class="bg-indigo-600 rounded-full w-2 h-2 animate-bounce"></div>
+              <div class="bg-green-700 rounded-full w-2 h-2 animate-bounce"></div>
               <div
-                class="bg-indigo-600 rounded-full w-2 h-2 animate-bounce"
+                class="bg-green-700 rounded-full w-2 h-2 animate-bounce"
                 style="animation-delay: 0.2s"
               ></div>
               <div
-                class="bg-indigo-600 rounded-full w-2 h-2 animate-bounce"
+                class="bg-green-700 rounded-full w-2 h-2 animate-bounce"
                 style="animation-delay: 0.4s"
               ></div>
             </div>
@@ -107,11 +107,11 @@
             v-model="nuevoMensaje"
             type="text"
             placeholder="Escribe tu pregunta..."
-            class="flex-1 border border-gray-300 rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="flex-1 border border-gray-300 rounded-l-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
           <button
             type="submit"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-r-lg py-2 px-4 transition-colors"
+            class="bg-green-700 hover:bg-green-800 text-white rounded-r-lg py-2 px-4 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +133,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, watch, nextTick } from 'vue'
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-hidden w-full h-[500px] lg:h-[600px]">
+  <div class="relative overflow-hidden w-full h-[300px] lg:h-[400px]">
     <!-- Slides -->
     <div
       v-for="(slide, index) in slides"
@@ -68,29 +68,27 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-
-// Datos de ejemplo para el carousel - puedes adaptarlos según tus necesidades
+const getImageUrl = (name) => {
+  return new URL(`/src/assets/${name}`, import.meta.url).href
+}
+// Datos de ejemplo para el carousel usando imágenes locales
 const slides = ref([
   {
-    image:
-      'https://images.unsplash.com/photo-1527061011720-61c5f3757f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+    image: getImageUrl('caro1.jpg'),
     alt: 'Arreglos florales LaBloom',
     position: 'center',
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1561178275-9edbd6110b78?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+    image: getImageUrl('caro2.jpg'),
     alt: 'Flores frescas',
     position: 'center',
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1562690868-60bbe7293e94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+    image: getImageUrl('caro3.jpg'),
     alt: 'Diseño floral',
     position: 'center',
   },
 ])
-
 const currentSlide = ref(0)
 let timer = null
 

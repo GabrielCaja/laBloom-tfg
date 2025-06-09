@@ -126,13 +126,6 @@
                     >
                     <span>Elegir método de pago y confirmar pedido</span>
                   </div>
-                  <div class="flex items-center">
-                    <span
-                      class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs mr-3"
-                      >4</span
-                    >
-                    <span>Recibir confirmación por email</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -152,18 +145,6 @@
                 <div class="flex items-center space-x-2">
                   <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
                   <span class="text-gray-700">Tarjetas de crédito/débito</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <span class="text-gray-700">PayPal</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <span class="text-gray-700">Transferencia bancaria</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <span class="text-gray-700">Bizum</span>
                 </div>
               </div>
             </div>

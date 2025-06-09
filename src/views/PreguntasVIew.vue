@@ -4,7 +4,7 @@
   <div class="bg-gray-50 border-b border-gray-200">
     <div class="container mx-auto px-4 py-3">
       <div class="flex items-center text-sm text-gray-500">
-        <router-link to="/" class="hover:text-indigo-600 transition-colors">
+        <router-link to="/" class="hover:text-green-600 transition-colors">
           <span class="flex items-center"> Inicio </span>
         </router-link>
         <svg
@@ -20,14 +20,15 @@
       </div>
     </div>
   </div>
+
   <!-- Sección héroe con imagen de fondo -->
-  <div class="relative bg-gradient-to-r from-violet-500 to-indigo-600 py-16">
+  <div class="relative bg-gradient-to-r from-green-600 to-green-700 py-16">
     <div class="absolute inset-0 opacity-20 bg-patron"></div>
     <div class="container mx-auto px-4 relative z-10">
       <h1 class="text-4xl md:text-5xl font-extrabold text-white text-center mb-4">
         Preguntas Frecuentes
       </h1>
-      <p class="text-xl text-indigo-100 text-center max-w-2xl mx-auto">
+      <p class="text-xl text-green-100 text-center max-w-2xl mx-auto">
         Todo lo que necesitas saber sobre nuestros productos y servicios
       </p>
     </div>
@@ -43,7 +44,7 @@
             v-model="textoBusqueda"
             type="text"
             placeholder="Buscar pregunta..."
-            class="w-full py-3 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+            class="w-full py-3 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +70,7 @@
           class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
           :class="
             categoriaActiva === 'todas'
-              ? 'bg-indigo-600 text-white'
+              ? 'bg-green-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           "
         >
@@ -82,7 +83,7 @@
           class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
           :class="
             categoriaActiva === categoria.id
-              ? 'bg-indigo-600 text-white'
+              ? 'bg-green-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           "
         >
@@ -96,7 +97,7 @@
           v-for="(pregunta, indice) in preguntasFiltradas"
           :key="indice"
           class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 transition-all duration-200 hover:shadow-md"
-          :class="{ 'shadow-md ring-2 ring-indigo-500 ring-opacity-50': pregunta.abierta }"
+          :class="{ 'shadow-md ring-2 ring-green-500 ring-opacity-50': pregunta.abierta }"
         >
           <button
             @click="alternarPregunta(indice)"
@@ -104,13 +105,13 @@
           >
             <h2 class="text-lg font-medium text-gray-900 pr-8">{{ pregunta.pregunta }}</h2>
             <div
-              class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-50 flex items-center justify-center transition-transform duration-300"
-              :class="{ 'bg-indigo-100 text-indigo-600': pregunta.abierta }"
+              class="flex-shrink-0 h-8 w-8 rounded-full bg-green-50 flex items-center justify-center transition-transform duration-300"
+              :class="{ 'bg-green-100 text-green-600': pregunta.abierta }"
             >
               <svg
                 class="h-5 w-5 transition-transform duration-300"
                 :class="{
-                  'rotate-180 text-indigo-600': pregunta.abierta,
+                  'rotate-180 text-green-600': pregunta.abierta,
                   'text-gray-500': !pregunta.abierta,
                 }"
                 xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +137,7 @@
                 <p class="text-gray-600">{{ pregunta.respuesta }}</p>
                 <div
                   v-if="pregunta.infoAdicional"
-                  class="mt-4 p-3 bg-indigo-50 rounded-lg text-indigo-700 text-sm"
+                  class="mt-4 p-3 bg-green-50 rounded-lg text-green-700 text-sm"
                 >
                   <div class="flex items-start">
                     <svg
@@ -185,7 +186,7 @@
 
     <!-- Seccion de Contacto -->
     <div
-      class="max-w-4xl mx-auto mt-16 bg-gradient-to-br from-indigo-50 to-violet-50 rounded-2xl p-8 shadow-sm"
+      class="max-w-4xl mx-auto mt-16 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 shadow-sm"
     >
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900">¿No has encontrado lo que buscabas?</h2>
@@ -195,10 +196,10 @@
       </div>
       <div class="grid md:grid-cols-2 gap-6">
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
-          <div class="bg-indigo-100 p-3 rounded-full mr-4">
+          <div class="bg-green-100 p-3 rounded-full mr-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-indigo-600"
+              class="h-6 w-6 text-green-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -213,14 +214,14 @@
           </div>
           <div>
             <h3 class="font-medium text-gray-900">Correo Electrónico</h3>
-            <p class="text-indigo-600 mt-1">info@labloom.com</p>
+            <p class="text-green-600 mt-1">info@labloom.com</p>
           </div>
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
-          <div class="bg-indigo-100 p-3 rounded-full mr-4">
+          <div class="bg-green-100 p-3 rounded-full mr-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-indigo-600"
+              class="h-6 w-6 text-green-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -235,19 +236,18 @@
           </div>
           <div>
             <h3 class="font-medium text-gray-900">Teléfono</h3>
-            <p class="text-indigo-600 mt-1">+34 XXX XXX XX</p>
+            <p class="text-green-600 mt-1">+34 623 236 31</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <PieDePagina />
+  <Footer />
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
-import BarraNavegacion from '@/components/Navbar.vue'
-import PieDePagina from '@/components/Footer.vue'
+import Footer from '@/components/Footer.vue'
 import Navbar from '@/components/Navbar.vue'
 
 //Categorías para filtrar las preguntas
@@ -274,7 +274,7 @@ const preguntas = ref([
   {
     pregunta: '¿Cuáles son los métodos de pago aceptados?',
     respuesta:
-      'Aceptamos tarjetas de crédito (Visa, MasterCard, American Express), PayPal y transferencia bancaria. Todos nuestros métodos de pago son seguros y están protegidos con la última tecnología de encriptación.',
+      'Aceptamos tarjetas de crédito (Visa, MasterCard, American Express) Todos nuestros métodos de pago son seguros y están protegidos con la última tecnología de encriptación.',
     abierta: false,
     categoria: 'pagos',
     infoAdicional:
@@ -299,7 +299,7 @@ const preguntas = ref([
   {
     pregunta: '¿Cómo puedo contactar con el servicio al cliente?',
     respuesta:
-      'Puedes contactarnos a través de nuestro formulario en línea, por correo electrónico a info@ejemplo.com o por teléfono al +34 900 123 456 de lunes a viernes de 9:00 a 18:00. Nuestro equipo estará encantado de ayudarte con cualquier consulta.',
+      'Puedes contactarnos a través de nuestro formulario en línea, por correo electrónico a info@ejemplo.com o por teléfono al +34 632 134 456 de lunes a viernes de 9:00 a 18:00. Nuestro equipo estará encantado de ayudarte con cualquier consulta.',
     abierta: false,
     categoria: 'contacto',
   },
