@@ -183,7 +183,7 @@ const cargarArticulo = async () => {
     cargando.value = true
     error.value = null
 
-    const respuesta = await axios.get(`http://localhost:8000/api/articulo/${id}/`)
+    const respuesta = await axios.get(`http://88.198.109.171:8000/api/articulo/${id}/`)
 
     articulo.value = respuesta.data
   } catch (err) {
