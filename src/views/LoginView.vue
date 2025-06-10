@@ -90,7 +90,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post('http://localhost:8000/api/login/', {
+        const response = await axios.post('http://88.198.109.171:8000/api/login/', {
           email: this.email,
           password: this.password,
         })

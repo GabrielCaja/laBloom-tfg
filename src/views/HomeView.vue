@@ -359,10 +359,10 @@ const cargarValoracionesDestacadas = async () => {
     errorValoraciones.value = null
 
     // Cargar todas las valoraciones
-    const valoracionesResponse = await axios.get('http://localhost:8000/api/valoraciones')
+    const valoracionesResponse = await axios.get('http://88.198.109.171:8000/api/valoraciones')
 
     // Cargar productos para obtener nombres
-    const productosResponse = await axios.get('http://localhost:8000/api/producto/')
+    const productosResponse = await axios.get('http://88.198.109.171:8000/api/producto/')
 
     // Filtrar valoraciones con comentarios y puntuación alta (4-5 estrellas)
     const valoracionesBuenas = valoracionesResponse.data.filter(
@@ -418,7 +418,7 @@ const cargarProductosDestacados = async () => {
     error.value = null
 
     // Cargar todos los productos
-    const response = await axios.get('http://localhost:8000/api/producto/')
+    const response = await axios.get('http://88.198.109.171:8000/api/producto/')
 
     // Filtrar productos visibles y tomar 3 aleatorios
     const productosVisibles = response.data.filter(
@@ -454,7 +454,7 @@ const cargarCategorias = async () => {
   try {
     loadingCategorias.value = true
     errorCategorias.value = null
-    const response = await axios.get('http://localhost:8000/api/categoria/')
+    const response = await axios.get('http://88.198.109.171:8000/api/categoria/')
 
     categorias.value = response.data
       .map((categoria) => ({
@@ -490,7 +490,7 @@ const cargarArticulosRecientes = async () => {
     loadingArticulos.value = true
     errorArticulos.value = null
 
-    const response = await axios.get('http://localhost:8000/api/articulo/')
+    const response = await axios.get('http://88.198.109.171:8000/api/articulo/')
 
     articulosRecientes.value = response.data
       .map((articulo) => ({
