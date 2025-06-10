@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://88.198.109.171:8000/api'
+const API_URL = 'http://localhost:8000/api'
 
 const CarritoService = {
   //Obtener el carrito actual

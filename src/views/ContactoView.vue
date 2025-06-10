@@ -345,7 +345,7 @@ const enviarContacto = async () => {
   enviando.value = true
 
   try {
-    await axios.post('http://88.198.109.171:8000/api/contacto', formulario.value)
+    await axios.post('http://localhost:8000/api/contacto', formulario.value)
 
     //Resetear formulario y mostrar mensaje de éxito
     formulario.value = {

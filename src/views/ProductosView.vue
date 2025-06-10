@@ -492,7 +492,7 @@ const cargarProductos = async () => {
     cargando.value = true
     error.value = null
 
-    const respuesta = await axios.get('http://88.198.109.171:8000/api/producto/')
+    const respuesta = await axios.get('http://localhost:8000/api/producto/')
 
     //Filtrar solo los productos visibles antes de procesarlos
     productos.value = respuesta.data
@@ -524,7 +524,7 @@ const cargarProductos = async () => {
 //Función para cargar categorías desde la API
 const cargarCategorias = async () => {
   try {
-    const respuesta = await axios.get('http://88.198.109.171:8000/api/categoria/')
+    const respuesta = await axios.get('http://localhost:8000/api/categoria/')
     categorias.value = respuesta.data.map((categoria) => ({
       id: categoria.id,
       nombre: categoria.nombre,

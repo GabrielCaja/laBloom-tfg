@@ -178,7 +178,7 @@ onMounted(() => {
 const getArticulos = async () => {
   try {
     loading.value = true
-    const response = await axios.get('http://88.198.109.171:8000/api/articulo/')
+    const response = await axios.get('http://localhost:8000/api/articulo/')
     articulos.value = response.data
     console.log(response.data)
     error.value = null

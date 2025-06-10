@@ -640,7 +640,7 @@ const obtenerUsuarioActual = async () => {
     const token = localStorage.getItem('access_token')
     if (!token) return
 
-    const response = await axios.get('http://88.198.109.171:8000/api/usuario/perfil', {
+    const response = await axios.get('http://localhost:8000/api/usuario/perfil', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -656,7 +656,7 @@ const cargarValoraciones = async () => {
   if (!producto.value?.id) return
 
   try {
-    const response = await axios.get(`http://88.198.109.171:8000/api/valoraciones`)
+    const response = await axios.get(`http://localhost:8000/api/valoraciones`)
     // Filtrar valoraciones por producto
     valoraciones.value = response.data.filter((v) => v.producto_id === producto.value.id)
 
@@ -673,7 +673,7 @@ const cargarDatosUsuarios = async () => {
     const token = localStorage.getItem('access_token')
     if (!token) return
 
-    const response = await axios.get('http://88.198.109.171:8000/api/usuario', {
+    const response = await axios.get('http://localhost:8000/api/usuario', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -742,7 +742,7 @@ const enviarValoracion = async () => {
     }
 
     const token = localStorage.getItem('access_token')
-    const response = await axios.post('http://88.198.109.171:8000/api/valoraciones', datosValoracion, {
+    const response = await axios.post('http://localhost:8000/api/valoraciones', datosValoracion, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -785,7 +785,7 @@ const eliminarValoracion = async (valoracionId) => {
 
   try {
     const token = localStorage.getItem('access_token')
-    await axios.delete(`http://88.198.109.171:8000/api/valoraciones/${valoracionId}`, {
+    await axios.delete(`http://localhost:8000/api/valoraciones/${valoracionId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -848,7 +848,7 @@ const cargarProducto = async () => {
     cargando.value = true
     error.value = null
 
-    const respuesta = await axios.get(`http://88.198.109.171:8000/api/producto/${id}/`)
+    const respuesta = await axios.get(`http://localhost:8000/api/producto/${id}/`)
 
     producto.value = {
       id: respuesta.data.id,
