@@ -1,20 +1,20 @@
 <template>
   <nav class="bg-white shadow-sm">
-    <div class="max-w-6xl mx-auto px-8">
-      <div class="flex justify-between items-center h-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8">
+      <div class="flex justify-between items-center h-16 sm:h-20">
         <!-- Logo -->
-        <div class="flex items-center space-x-4 flex-1">
+        <div class="flex items-center space-x-2 sm:space-x-4">
           <router-link to="/" class="flex items-center">
-            <img src="/src/logo.png" alt="Logo" class="h-16 w-auto" />
+            <img src="/src/logo.png" alt="Logo" class="h-10 sm:h-16 w-auto" />
           </router-link>
           <!-- Nombre de la tienda -->
           <router-link to="/" class="flex items-center">
-            <span class="text-xl font-bold">LaBloom</span>
+            <span class="text-lg sm:text-xl font-bold">LaBloom</span>
           </router-link>
         </div>
 
-        <!-- Barra de busqueda -->
-        <div class="flex-1 flex justify-center">
+        <!-- Barra de busqueda (solo en desktop) -->
+        <div class="hidden md:flex flex-1 justify-center">
           <input
             v-if="mostrarBusqueda"
             v-model="searchQuery"
@@ -25,7 +25,42 @@
           />
         </div>
 
-        <!-- Navigation -->
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button
+            @click="toggleMobileMenu"
+            class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          >
+            <svg
+              v-if="!mobileMenuOpen"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-6 flex-1 justify-end">
           <router-link to="/productos" class="hover:text-gray-600">Productos</router-link>
           <router-link to="/blog" class="hover:text-gray-600">Blog</router-link>
@@ -155,6 +190,168 @@
           </div>
         </div>
       </div>
+
+      <!-- Mobile menu -->
+      <div v-if="mobileMenuOpen" class="md:hidden border-t border-gray-200 bg-white">
+        <!-- Barra de búsqueda móvil -->
+        <div v-if="mostrarBusqueda" class="px-4 py-3 border-b border-gray-200">
+          <input
+            v-model="searchQuery"
+            @input="searchProductos"
+            type="text"
+            placeholder="Buscar productos..."
+            class="w-full p-2 text-black rounded border"
+          />
+        </div>
+
+        <div class="px-4 py-2 space-y-1">
+          <router-link
+            to="/productos"
+            @click="closeMobileMenu"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+          >
+            Productos
+          </router-link>
+          <router-link
+            to="/blog"
+            @click="closeMobileMenu"
+            class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+          >
+            Blog
+          </router-link>
+          <router-link
+            to="/preguntas-frecuentes"
+            @click="closeMobileMenu"
+            class="flex items-center px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-5 h-5 mr-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+              />
+            </svg>
+            FAQ
+          </router-link>
+
+          <!-- Enlaces cuando NO está logeado -->
+          <router-link
+            v-if="!logeado"
+            to="/login"
+            @click="closeMobileMenu"
+            class="flex items-center px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-5 h-5 mr-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+            Iniciar Sesión
+          </router-link>
+
+          <!-- Enlaces cuando SÍ está logeado -->
+          <template v-if="logeado">
+            <router-link
+              to="/perfil"
+              @click="closeMobileMenu"
+              class="flex items-center px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:bg-blue-50"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                />
+              </svg>
+              Mi Perfil
+            </router-link>
+            <router-link
+              to="/carrito"
+              @click="closeMobileMenu"
+              class="flex items-center px-3 py-2 rounded-md text-base font-medium text-green-600 hover:bg-green-50"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5 mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                />
+              </svg>
+              Carrito
+            </router-link>
+          </template>
+
+          <!-- Selector de moneda móvil -->
+          <div class="px-3 py-2">
+            <p class="text-sm font-medium text-gray-600 mb-2">Moneda</p>
+            <div class="space-y-1">
+              <button
+                v-for="(currency, code) in currenciesWithFlags"
+                :key="code"
+                @click="setCurrency(code)"
+                class="w-full flex items-center px-2 py-1 text-sm rounded hover:bg-gray-50 transition-colors"
+                :class="{ 'bg-blue-50 text-blue-600': currentCurrency === code }"
+              >
+                <span class="mr-2">{{ currency.flag }}</span>
+                <span class="font-medium">{{ currency.symbol }} {{ code }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Logout móvil -->
+          <button
+            v-if="logeado"
+            @click="logout"
+            class="w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-5 h-5 mr-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+              />
+            </svg>
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -168,6 +365,7 @@ const router = useRouter()
 const route = useRoute()
 const logeado = ref(false)
 const searchQuery = ref('')
+const mobileMenuOpen = ref(false)
 const { currentCurrency, currencies, setCurrency, getCurrencySymbol } = useCurrency()
 
 const emit = defineEmits(['search-productos'])
@@ -176,6 +374,7 @@ const currenciesWithFlags = {
   USD: { symbol: '$', rate: 1.09, name: 'US Dollar', flag: '🇺🇸' },
   GBP: { symbol: '£', rate: 0.87, name: 'British Pound', flag: '🇬🇧' },
 }
+
 //Propiedad para determinar si se debe mostrar la barra de búsqueda
 const mostrarBusqueda = computed(() => {
   return route.name === 'productos' || route.path === '/productos'
@@ -197,10 +396,19 @@ const logout = () => {
   localStorage.removeItem('access_token')
   localStorage.removeItem('es_admin')
   logeado.value = false
+  mobileMenuOpen.value = false
   router.push('/')
 }
 
 const searchProductos = () => {
   emit('search-productos', searchQuery.value)
+}
+
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false
 }
 </script>
