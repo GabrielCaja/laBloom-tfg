@@ -59,63 +59,6 @@
               <option value="mas_recientes">Más recientes</option>
             </select>
           </div>
-
-          <!-- Modo visualización (solo desktop en esta posición) -->
-          <div class="hidden lg:flex flex-col space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Visualización</label>
-            <div class="flex space-x-2">
-              <button
-                @click="modoVisualizacion = 'grid'"
-                :class="[
-                  'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border',
-                  modoVisualizacion === 'grid'
-                    ? 'bg-green-100 text-green-700 border-green-200'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
-                ]"
-                title="Vista en cuadrícula"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mx-auto"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-              </button>
-              <button
-                @click="modoVisualizacion = 'list'"
-                :class="[
-                  'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border',
-                  modoVisualizacion === 'list'
-                    ? 'bg-green-100 text-green-700 border-green-200'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
-                ]"
-                title="Vista en lista"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mx-auto"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
         </div>
 
         <!-- Segunda fila: Precio y controles adicionales -->
@@ -139,64 +82,6 @@
               <span>50€</span>
               <span>75€</span>
               <span>100€</span>
-            </div>
-          </div>
-
-          <!-- Controles adicionales -->
-          <div class="flex flex-col justify-end space-y-3">
-            <!-- Modo visualización móvil -->
-            <div class="lg:hidden">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Visualización</label>
-              <div class="flex space-x-2">
-                <button
-                  @click="modoVisualizacion = 'grid'"
-                  :class="[
-                    'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border text-sm',
-                    modoVisualizacion === 'grid'
-                      ? 'bg-green-100 text-green-700 border-green-200'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
-                  ]"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 mx-auto"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                    />
-                  </svg>
-                </button>
-                <button
-                  @click="modoVisualizacion = 'list'"
-                  :class="[
-                    'flex-1 p-2.5 rounded-lg focus:outline-none transition-all border text-sm',
-                    modoVisualizacion === 'list'
-                      ? 'bg-green-100 text-green-700 border-green-200'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-gray-200',
-                  ]"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 mx-auto"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                </button>
-              </div>
             </div>
           </div>
         </div>
